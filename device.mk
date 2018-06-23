@@ -201,7 +201,9 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     android.hidl.base@1.0 \
     android.hidl.manager@1.0 \
-    android.hidl.manager@1.0-java
+    android.hidl.manager@1.0-java \
+    android.hidl.base@1.0_system \
+    android.hidl.manager@1.0_system
 
 # HW crypto
 PRODUCT_PACKAGES += \
