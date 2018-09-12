@@ -102,7 +102,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
     debug.enable.sglscale=1 \
     debug.gralloc.enable_fb_ubwc=1 \
     debug.mdpcomp.logs=0 \
-    debug.sdm.support_writeback=0 \
     debug.sf.hw=0 \
     debug.sf.latch_unsignaled=1 \
     debug.sf.recomputecrop=0 \
@@ -118,8 +117,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
     vendor.display.perf_hint_window=50 \
     vendor.gralloc.enable_fb_ubwc=1 \
     vendor.display.enable_default_color_mode=1 \
-    sys.display-size=1920x1080
-
+    sys.display-size=1920x1080 \
+    video.accelerate.hw=1 \
+    debug.sdm.support_writeback=0
 
 # IMS
 PRODUCT_PROPERTY_OVERRIDES += \
