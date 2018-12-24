@@ -61,6 +61,9 @@
     <hidden-api-whitelisted-app package="com.qualcomm.qti.app" />
     <hidden-api-whitelisted-app package="com.qualcomm.embms" />
     <hidden-api-whitelisted-app package="com.qualcomm.qti.embmstuneaway" />
+
     <hidden-api-whitelisted-app package="com.qualcomm.qti.lpa" />
     <hidden-api-whitelisted-app package="com.qualcomm.qti.uim" />
+    <hidden-api-whitelisted-app package="com.qualcomm.wfd.client" />
+    <hidden-api-whitelisted-app package="com.qualcomm.wfd.service" />
 </config>
