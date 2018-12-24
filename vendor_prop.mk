@@ -81,9 +81,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Display
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.opengles.version=196608 \
-    ro.vendor.display.cabl=2 \
-    ro.sf.lcd_density=295 \
-    vendor.display.enable_default_color_mode=1
+    ro.vendor.display.cabl=2 
 
 # Fm
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -102,6 +100,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     debug.egl.hw=0 \
     debug.enable.sglscale=1 \
+    debug.gralloc.enable_fb_ubwc=1 \
     debug.mdpcomp.logs=0 \
     debug.sdm.support_writeback=0 \
     debug.sf.hw=0 \
@@ -110,6 +109,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     debug.sf.disable_backpressure=1 \
     debug.sf.enable_hwc_vds=1 \
     dev.pm.dyn_samplingrate=1 \
+    persist.debug.wfd.enable=1 \
     persist.demo.hdmirotationlock=false \
     persist.hwc.enable_vds=1 \
     persist.hwc.mdpcomp.enable=true \
@@ -117,7 +117,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
     vendor.display.disable_skip_validate=1 \
     vendor.display.perf_hint_window=50 \
     vendor.gralloc.enable_fb_ubwc=1 \
+    vendor.display.enable_default_color_mode=1 \
     sys.display-size=1920x1080
+
 
 # IMS
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -128,13 +130,19 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Media
 PRODUCT_PROPERTY_OVERRIDES += \
     mm.enable.qcom_parser=4176895 \
+    media.aac_51_output_enabled=true \
     media.stagefright.audio.sink=280 \
+    vendor.mm.enable.qcom_parser=1048575 \
+    vendor.audio.hw.aac.encoder=true \
+    mm.enable.smoothstreaming=true \
+    mmp.enable.3g2=true \
     debug.stagefright.omx_default_rank.sw-audio=1 \
     debug.stagefright.omx_default_rank=0 \
     vendor.vidc.disable.split.mode=1 \
     vendor.vidc.enc.disable_bframes=1 \
     vendor.vidc.enc.disable_pframes=1 \
     vendor.vidc.enc.disable.pq=true \
+    vendor.video.disable.ubwc=1 \
     vendor.vidc.enc.narrow.searchrange=1
 
 #Memory optimization

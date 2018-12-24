@@ -57,9 +57,13 @@ PRODUCT_PACKAGES += \
     audio.primary.msm8937 \
     audio.r_submix.default \
     audio.usb.default \
+    libaudioroute \
+    libaacwrapper \
+    libaudio-resampler \
     libqcompostprocbundle \
     libqcomvisualizer \
-    libqcomvoiceprocessing
+    libqcomvoiceprocessing \
+    tinymix
 
 PRODUCT_PACKAGES += \
     android.hardware.audio@2.0-impl \
@@ -128,6 +132,8 @@ PRODUCT_PACKAGES += \
     libdisplayconfig \
     libqdMetaData.system \
     libtinyxml \
+    liboverlay \
+    libgenlock \
     memtrack.msm8937
 
 PRODUCT_PACKAGES += \
@@ -469,6 +475,13 @@ PRODUCT_PACKAGES += \
     messaging \
     Dialer \
     Contacts
+
+# Wi-Fi Display
+PRODUCT_PACKAGES += \
+    libnl
+
+PRODUCT_BOOT_JARS += \
+    WfdCommon
 
 # Inherit common proprietary files
 $(call inherit-product-if-exists, vendor/xiaomi/ugglite/ugglite-vendor.mk)
