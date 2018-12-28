@@ -133,10 +133,17 @@ public class DiracSettingsFragment extends PreferenceFragment implements
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         switch (preference.getKey()) {
             case PREF_HEADSET:
+<<<<<<< HEAD
                 mDiracUtils.setHeadsetType(Integer.parseInt(newValue.toString()));
                 return true;
             case PREF_PRESET:
                 mDiracUtils.setLevel(String.valueOf(newValue));
+=======
+                DiracUtils.setHeadsetType(Integer.parseInt(newValue.toString()));
+                return true;
+            case PREF_PRESET:
+                DiracUtils.setLevel(String.valueOf(newValue));
+>>>>>>> a0d2387... ugglite: parts: Add DiracSound backend
                 return true;
             default: return false;
         }
@@ -144,6 +151,7 @@ public class DiracSettingsFragment extends PreferenceFragment implements
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+<<<<<<< HEAD
 <<<<<<< HEAD
         mDiracUtils.setEnabled(isChecked);
 <<<<<<< HEAD
@@ -153,6 +161,10 @@ public class DiracSettingsFragment extends PreferenceFragment implements
 >>>>>>> 57e7749... ugglite: Dirac fixes
 
 >>>>>>> 845e444... ugglite: parts: Refactor Dirac setup
+=======
+        DiracUtils.setMusic(isChecked);
+
+>>>>>>> a0d2387... ugglite: parts: Add DiracSound backend
         mTextView.setText(getString(isChecked ? R.string.switch_bar_on : R.string.switch_bar_off));
 <<<<<<< HEAD
         if (isChecked) {

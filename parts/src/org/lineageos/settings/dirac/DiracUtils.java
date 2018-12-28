@@ -18,6 +18,7 @@ package org.lineageos.settings.dirac;
 
 import android.content.Context;
 import android.content.Intent;
+<<<<<<< HEAD
 import android.os.Handler;
 import android.os.UserHandle;
 import android.os.SystemClock;
@@ -196,6 +197,34 @@ public final class DiracUtils {
     }
 
     protected void setLevel(String preset) {
+=======
+import android.os.UserHandle;
+
+public final class DiracUtils {
+
+    protected static DiracSound mDiracSound;
+    private static boolean mInitialized;
+
+    public static void initialize() {
+        if (!mInitialized) {
+            mInitialized = true;
+            mDiracSound = new DiracSound(0, 0);
+            mDiracSound.setMusic(mDiracSound.getMusic());
+            mDiracSound.setHeadsetType(mDiracSound.getHeadsetType());
+            setLevel(getLevel());
+        }
+    }
+
+    protected static void setMusic(boolean enable) {
+        mDiracSound.setMusic(enable ? 1 : 0);
+    }
+
+    protected static boolean isDiracEnabled(Context context) {
+        return mDiracSound.getMusic() == 1;
+    }
+
+    protected static void setLevel(String preset) {
+>>>>>>> a0d2387... ugglite: parts: Add DiracSound backend
         String[] level = preset.split("\\s*,\\s*");
 
         for (int band = 0; band <= level.length - 1; band++) {
@@ -203,7 +232,11 @@ public final class DiracUtils {
         }
     }
 
+<<<<<<< HEAD
     protected String getLevel() {
+=======
+    protected static String getLevel() {
+>>>>>>> a0d2387... ugglite: parts: Add DiracSound backend
         String selected = "";
         for (int band = 0; band <= 6; band++) {
             int temp = (int) mDiracSound.getLevel(band);
@@ -213,7 +246,11 @@ public final class DiracUtils {
         return selected;
     }
 
+<<<<<<< HEAD
     protected void setHeadsetType(int paramInt) {
+=======
+    protected static void setHeadsetType(int paramInt) {
+>>>>>>> a0d2387... ugglite: parts: Add DiracSound backend
          mDiracSound.setHeadsetType(paramInt);
     }
 }

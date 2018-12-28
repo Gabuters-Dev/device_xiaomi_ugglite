@@ -22,6 +22,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+<<<<<<< HEAD:doze/src/org/lineageos/settings/doze/BootCompletedReceiver.java
+=======
+import org.lineageos.settings.dirac.DiracUtils;
+import org.lineageos.settings.doze.DozeUtils;
+
+>>>>>>> a0d2387... ugglite: parts: Add DiracSound backend:parts/src/org/lineageos/settings/BootCompletedReceiver.java
 public class BootCompletedReceiver extends BroadcastReceiver {
 
     private static final boolean DEBUG = false;
@@ -45,6 +51,7 @@ public class BootCompletedReceiver extends BroadcastReceiver {
 =======
         if (DozeUtils.isDozeEnabled(context) && DozeUtils.sensorsEnabled(context)) {
             if (DEBUG) Log.d(TAG, "Starting Doze service");
+	    DiracUtils.initialize();
             DozeUtils.startService(context);
         }
         DiracUtils.initialize(context);
