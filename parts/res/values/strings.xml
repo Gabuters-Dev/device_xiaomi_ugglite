@@ -16,6 +16,7 @@
 -->
 <resources>
     <!-- Dirac settings -->
+<<<<<<< HEAD
     <string name="dirac_title">Mi Sound Enhancer</string>
     <string name="dirac_summary">Optimize audio quality</string>
     <string name="dirac_headset_title">Choose headphones type</string>
@@ -26,6 +27,12 @@
     <string name="dirac_hifi_summary">Decrease noise and Distortion and increase audio quality</string>
 =======
 >>>>>>> ea06db1... ugglite: parts: Refactor dirac strings
+=======
+    <string name="dirac_title">Dirac sound enhancer</string>
+    <string name="dirac_summary">Optimize audio quality</string>
+    <string name="dirac_headset_title">Headset type</string>
+    <string name="dirac_preset_title">Sound preset</string>
+>>>>>>> d4ddfef... ugglite: parts: Add summary for dirac
 
     <!-- Dirac settings: Headset types -->
     <string name="dirac_headset_default">Default</string>
