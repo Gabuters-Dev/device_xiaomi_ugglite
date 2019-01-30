@@ -48,6 +48,9 @@ LOCAL_SHARED_LIBRARIES := \
 LOCAL_HEADER_LIBRARIES := \
     libhardware_headers
 
+LOCAL_HEADER_LIBRARIES := \
+    generated_kernel_headers
+
 LOCAL_SRC_FILES := \
     power-common.c \
     metadata-parser.c \
