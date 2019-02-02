@@ -23,6 +23,15 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+<<<<<<< HEAD
+=======
+import android.support.v14.preference.PreferenceFragment;
+import android.support.v14.preference.SwitchPreference;
+import android.support.v7.preference.ListPreference;
+import android.support.v7.preference.Preference;
+import android.support.v7.preference.PreferenceCategory;
+import android.support.v7.preference.Preference.OnPreferenceChangeListener;
+>>>>>>> eae7be4... ugglite: dirac: Prevent failures when toggling
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -121,11 +130,16 @@ public class DiracSettingsFragment extends PreferenceFragment implements
     public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
         mDiracUtils.setEnabled(isChecked);
         mTextView.setText(getString(isChecked ? R.string.switch_bar_on : R.string.switch_bar_off));
+<<<<<<< HEAD
         if (isChecked) {
+=======
+        if (isChecked){
+>>>>>>> eae7be4... ugglite: dirac: Prevent failures when toggling
             mSwitchBar.setEnabled(false);
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
+<<<<<<< HEAD
                     try {
                         mSwitchBar.setEnabled(true);
                         setEnabled(isChecked);
@@ -138,6 +152,20 @@ public class DiracSettingsFragment extends PreferenceFragment implements
         }
     }
 
+=======
+                    try{
+                        mSwitchBar.setEnabled(true);
+                        setEnabled(isChecked);
+                    }catch(Exception ignored){
+                    }
+                }
+            }, 1020);
+        }else{
+            setEnabled(isChecked);
+        }
+    }
+    
+>>>>>>> eae7be4... ugglite: dirac: Prevent failures when toggling
     private void setEnabled(boolean enabled){
         mSwitchBar.setActivated(enabled);
         mHeadsetType.setEnabled(enabled);
