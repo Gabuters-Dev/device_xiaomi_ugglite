@@ -34,9 +34,12 @@ public class BootCompletedReceiver extends BroadcastReceiver {
             Utils.startService(context);
         }
 <<<<<<< HEAD:doze/src/org/lineageos/settings/doze/BootCompletedReceiver.java
+<<<<<<< HEAD:doze/src/org/lineageos/settings/doze/BootCompletedReceiver.java
 =======
         new DiracUtils(context).onBootCompleted();
 >>>>>>> b5eb671... ugglite: dirac: Only call setEnabled on boot completed:parts/src/org/lineageos/settings/BootCompletedReceiver.java
+=======
+        new DiracUtils(context);
+>>>>>>> 845e444... ugglite: parts: Refactor Dirac setup:parts/src/org/lineageos/settings/BootCompletedReceiver.java
     }
-
 }

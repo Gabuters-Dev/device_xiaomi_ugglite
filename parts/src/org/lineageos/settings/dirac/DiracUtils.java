@@ -31,11 +31,15 @@ import java.util.List;
 public final class DiracUtils {
 
     protected DiracSound mDiracSound;
+<<<<<<< HEAD
     private static DiracUtils mInstance;
+=======
+>>>>>>> 845e444... ugglite: parts: Refactor Dirac setup
     private MediaSessionManager mMediaSessionManager;
     private Handler mHandler = new Handler();
     private Context mContext;
 
+<<<<<<< HEAD
     public static DiracUtils getInstance() {
         if (mInstance == null) {
             throw new IllegalArgumentException("Trying to get instance without initializing!");
@@ -60,6 +64,17 @@ public final class DiracUtils {
         mInstance = this;
     }
 
+=======
+    public DiracUtils(final Context context) {
+        mContext = context;
+        mMediaSessionManager = (MediaSessionManager) context.getSystemService(Context.MEDIA_SESSION_SERVICE);
+        mDiracSound = new DiracSound(0, 0);
+        setEnabled(mDiracSound.getMusic() == 1);
+        mDiracSound.setHeadsetType(mDiracSound.getHeadsetType());
+        setLevel(getLevel());
+    }
+
+>>>>>>> 845e444... ugglite: parts: Refactor Dirac setup
     protected void refreshPlaybackIfNecessary(){
         if (mMediaSessionManager == null) {
             mMediaSessionManager = (MediaSessionManager) mContext.getSystemService(Context.MEDIA_SESSION_SERVICE);
