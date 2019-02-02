@@ -49,7 +49,11 @@ public final class DiracUtils {
         mDiracSound = new DiracSound(0, 0);
     }
 
+<<<<<<< HEAD
     public void onBootCompleted() {
+=======
+    public void onBootCompleted(){
+>>>>>>> b5eb671... ugglite: dirac: Only call setEnabled on boot completed
         setEnabled(mDiracSound.getMusic() == 1);
         mDiracSound.setHeadsetType(mDiracSound.getHeadsetType());
         setLevel(getLevel());
