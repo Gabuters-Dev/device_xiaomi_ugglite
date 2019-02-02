@@ -25,11 +25,15 @@ import android.view.KeyEvent;
 import android.media.session.MediaController;
 import android.media.session.MediaSessionManager;
 import android.media.session.PlaybackState;
+<<<<<<< HEAD
 import java.lang.IllegalArgumentException;
+=======
+>>>>>>> 57e7749... ugglite: Dirac fixes
 import java.util.List;
 
 public final class DiracUtils {
 
+<<<<<<< HEAD
     protected DiracSound mDiracSound;
 <<<<<<< HEAD
     private static DiracUtils mInstance;
@@ -43,10 +47,28 @@ public final class DiracUtils {
     public static DiracUtils getInstance() {
         if (mInstance == null) {
             throw new IllegalArgumentException("Trying to get instance without initializing!");
+=======
+    protected static DiracSound mDiracSound;
+    private static boolean mInitialized;
+    private static MediaSessionManager mMediaSessionManager;
+    private static Handler mHandler = new Handler();
+    private static Context mContext;
+
+    public static void initialize(Context context) {
+        if (!mInitialized) {
+            mContext = context;
+            mMediaSessionManager = (MediaSessionManager) context.getSystemService(Context.MEDIA_SESSION_SERVICE);
+            mInitialized = true;
+            mDiracSound = new DiracSound(0, 0);
+            setEnabled(mDiracSound.getMusic() == 1);
+            mDiracSound.setHeadsetType(mDiracSound.getHeadsetType());
+            setLevel(getLevel());
+>>>>>>> 57e7749... ugglite: Dirac fixes
         }
         return mInstance;
     }
 
+<<<<<<< HEAD
     public DiracUtils(final Context context) {
         mContext = context;
         mMediaSessionManager = (MediaSessionManager) context.getSystemService(Context.MEDIA_SESSION_SERVICE);
@@ -76,6 +98,9 @@ public final class DiracUtils {
 
 >>>>>>> 845e444... ugglite: parts: Refactor Dirac setup
     protected void refreshPlaybackIfNecessary(){
+=======
+    protected static void refreshPlaybackIfNecessary(){
+>>>>>>> 57e7749... ugglite: Dirac fixes
         if (mMediaSessionManager == null) {
             mMediaSessionManager = (MediaSessionManager) mContext.getSystemService(Context.MEDIA_SESSION_SERVICE);
         }
@@ -91,7 +116,11 @@ public final class DiracUtils {
         }
     }
 
+<<<<<<< HEAD
     private void triggerPlayPause(MediaController controller) {
+=======
+    private static void triggerPlayPause(MediaController controller) {
+>>>>>>> 57e7749... ugglite: Dirac fixes
         long when = SystemClock.uptimeMillis();
         final KeyEvent evDownPause = new KeyEvent(when, when, KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MEDIA_PAUSE, 0);
         final KeyEvent evUpPause = KeyEvent.changeAction(evDownPause, KeyEvent.ACTION_UP);
@@ -114,16 +143,27 @@ public final class DiracUtils {
             public void run() {
                 controller.dispatchMediaButtonEvent(evDownPlay);
             }
+<<<<<<< HEAD
         }, 1000);
+=======
+        }, 500);
+>>>>>>> 57e7749... ugglite: Dirac fixes
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 controller.dispatchMediaButtonEvent(evUpPlay);
             }
+<<<<<<< HEAD
         }, 1020);
     }
 
     private int getMediaControllerPlaybackState(MediaController controller) {
+=======
+        }, 520);
+    }
+
+    private static int getMediaControllerPlaybackState(MediaController controller) {
+>>>>>>> 57e7749... ugglite: Dirac fixes
         if (controller != null) {
             final PlaybackState playbackState = controller.getPlaybackState();
             if (playbackState != null) {
@@ -132,15 +172,26 @@ public final class DiracUtils {
         }
         return PlaybackState.STATE_NONE;
     }
+<<<<<<< HEAD
     protected void setEnabled(boolean enable) {
         mDiracSound.setEnabled(enable);
         mDiracSound.setMusic(enable ? 1 : 0);
         if (enable) {
+=======
+    protected static void setEnabled(boolean enable) {
+        mDiracSound.setEnabled(enable);
+        mDiracSound.setMusic(enable ? 1 : 0);
+        if (enable){
+>>>>>>> 57e7749... ugglite: Dirac fixes
             refreshPlaybackIfNecessary();
         }
     }
 
+<<<<<<< HEAD
     protected boolean isDiracEnabled() {
+=======
+    protected static boolean isDiracEnabled() {
+>>>>>>> 57e7749... ugglite: Dirac fixes
         return mDiracSound.getMusic() == 1;
     }
 

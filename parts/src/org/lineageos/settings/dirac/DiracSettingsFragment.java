@@ -76,11 +76,15 @@ public class DiracSettingsFragment extends PreferenceFragment implements
         actionBar.setDisplayHomeAsUpEnabled(true);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
         mDiracUtils = new DiracUtils(getContext());
 
 >>>>>>> 845e444... ugglite: parts: Refactor Dirac setup
         boolean enhancerEnabled = mDiracUtils.isDiracEnabled();
+=======
+        boolean enhancerEnabled = DiracUtils.isDiracEnabled();
+>>>>>>> 57e7749... ugglite: Dirac fixes
 
         mHeadsetType = (ListPreference) findPreference(PREF_HEADSET);
         mHeadsetType.setOnPreferenceChangeListener(this);
@@ -104,7 +108,11 @@ public class DiracSettingsFragment extends PreferenceFragment implements
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+<<<<<<< HEAD
         boolean enhancerEnabled = mDiracUtils.isDiracEnabled();
+=======
+        boolean enhancerEnabled = DiracUtils.isDiracEnabled();
+>>>>>>> 57e7749... ugglite: Dirac fixes
 
         mTextView = view.findViewById(R.id.switch_text);
         mTextView.setText(getString(enhancerEnabled ?
@@ -136,9 +144,13 @@ public class DiracSettingsFragment extends PreferenceFragment implements
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+<<<<<<< HEAD
         mDiracUtils.setEnabled(isChecked);
 <<<<<<< HEAD
 =======
+=======
+        DiracUtils.setEnabled(isChecked);
+>>>>>>> 57e7749... ugglite: Dirac fixes
 
 >>>>>>> 845e444... ugglite: parts: Refactor Dirac setup
         mTextView.setText(getString(isChecked ? R.string.switch_bar_on : R.string.switch_bar_off));

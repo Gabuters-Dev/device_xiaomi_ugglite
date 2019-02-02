@@ -29,6 +29,7 @@ public class BootCompletedReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(final Context context, Intent intent) {
+<<<<<<< HEAD:doze/src/org/lineageos/settings/doze/BootCompletedReceiver.java
         if (Utils.isDozeEnabled(context) && Utils.sensorsEnabled(context)) {
             if (DEBUG) Log.d(TAG, "Starting service");
             Utils.startService(context);
@@ -41,5 +42,12 @@ public class BootCompletedReceiver extends BroadcastReceiver {
 =======
         new DiracUtils(context);
 >>>>>>> 845e444... ugglite: parts: Refactor Dirac setup:parts/src/org/lineageos/settings/BootCompletedReceiver.java
+=======
+        if (DozeUtils.isDozeEnabled(context) && DozeUtils.sensorsEnabled(context)) {
+            if (DEBUG) Log.d(TAG, "Starting Doze service");
+            DozeUtils.startService(context);
+        }
+        DiracUtils.initialize(context);
+>>>>>>> 57e7749... ugglite: Dirac fixes:parts/src/org/lineageos/settings/BootCompletedReceiver.java
     }
 }
