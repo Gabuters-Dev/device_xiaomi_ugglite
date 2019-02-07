@@ -368,6 +368,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     android.hardware.renderscript@1.0-impl
 
+# RetroMusic
+PRODUCT_PACKAGES += \
+    RetroMusic
+
 # Seccomp policy
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/seccomp/mediacodec-seccomp.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediacodec.policy \
