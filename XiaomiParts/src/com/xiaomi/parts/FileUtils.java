@@ -60,7 +60,7 @@ class FileUtils {
             }
             try {
                 FileOutputStream fos = new FileOutputStream(new File(path));
-                fos.write((value ? "Y" : "N").getBytes());
+                fos.write((value ? "1" : "0").getBytes());
                 fos.flush();
                 fos.close();
             } catch (IOException e) {
@@ -150,5 +150,13 @@ class FileUtils {
 
     static String getStringProp(String prop, String defaultValue) {
         return SystemProperties.get(prop, defaultValue);
+    }
+
+    static void setintProp(String prop, int value) {
+        SystemProperties.set(prop, String.valueOf(value));
+    }
+
+    static int getintProp(String prop, int defaultValue) {
+        return SystemProperties.getInt(prop, defaultValue);
     }
 }

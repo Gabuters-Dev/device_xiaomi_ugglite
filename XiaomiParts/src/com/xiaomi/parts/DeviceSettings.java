@@ -18,31 +18,41 @@ package com.xiaomi.parts;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v14.preference.PreferenceFragment;
-import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceCategory;
+import android.os.Handler;
+import androidx.preference.PreferenceFragment;
+import androidx.preference.PreferenceManager;
+import androidx.preference.SwitchPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceCategory;
 
 import com.xiaomi.parts.kcal.KCalSettingsActivity;
+import com.xiaomi.parts.ambient.AmbientGesturePreferenceActivity;
 import com.xiaomi.parts.preferences.CustomSeekBarPreference;
 import com.xiaomi.parts.preferences.SecureSettingListPreference;
 import com.xiaomi.parts.preferences.SecureSettingSwitchPreference;
-import com.xiaomi.parts.preferences.VibrationSeekBarPreference;
+import com.xiaomi.parts.preferences.VibratorStrengthPreference;
+import com.xiaomi.parts.preferences.VibratorCallStrengthPreference;
+import com.xiaomi.parts.preferences.VibratorNotifStrengthPreference;
 
 public class DeviceSettings extends PreferenceFragment implements
         Preference.OnPreferenceChangeListener {
 
     final static String PREF_TORCH_BRIGHTNESS = "torch_brightness";
-    public static final String TORCH_1_BRIGHTNESS_PATH = "/sys/devices/soc/800f000.qcom," +
-            "spmi/spmi-0/spmi0-03/800f000.qcom,spmi:qcom,pm660l@3:qcom,leds@d300/leds/led:torch_0/max_brightness";
-    public static final String TORCH_2_BRIGHTNESS_PATH = "/sys/devices/soc/800f000.qcom," +
-            "spmi/spmi-0/spmi0-03/800f000.qcom,spmi:qcom,pm660l@3:qcom,leds@d300/leds/led:torch_1/max_brightness";
+    public static final String TORCH_1_BRIGHTNESS_PATH = "/sys/class/leds/led:torch_0/max_brightness";
+    public static final String TORCH_2_BRIGHTNESS_PATH = "/sys/class/leds/led:torch_1/max_brightness";
 
     public static final String PREF_BACKLIGHT_DIMMER = "backlight_dimmer";
     public static final String BACKLIGHT_DIMMER_PATH = "/sys/module/mdss_fb/parameters/backlight_dimmer";
 
     public static final String PREF_ENABLE_HAL3 = "hal3";
     public static final String HAL3_SYSTEM_PROPERTY = "persist.camera.HAL3.enabled";
+
+    public static final String KEY_VIBSTRENGTH = "vib_strength";    
+    public static final String KEY_CALL_VIBSTRENGTH = "vib_call_strength";
+    public static final String KEY_NOTIF_VIBSTRENGTH = "vib_notif_strength";
 
     public static final String CATEGORY_DISPLAY = "display";
     public static final String PREF_DEVICE_KCAL = "device_kcal";
@@ -59,27 +69,37 @@ public class DeviceSettings extends PreferenceFragment implements
     public static final String MICROPHONE_GAIN_PATH = "/sys/kernel/sound_control/mic_gain";
     public static final String PREF_EARPIECE_GAIN = "earpiece_gain";
     public static final String EARPIECE_GAIN_PATH = "/sys/kernel/sound_control/earpiece_gain";
+    public static final String PREF_SPEAKER_GAIN = "speaker_gain";
+    public static final String SPEAKER_GAIN_PATH = "/sys/kernel/sound_control/speaker_gain";
     public static final String CATEGORY_FASTCHARGE = "usb_fastcharge";
     public static final String PREF_USB_FASTCHARGE = "fastcharge";
     public static final String USB_FASTCHARGE_PATH = "/sys/kernel/fast_charge/force_fast_charge";
+    public static final String PREF_KEY_FPS_INFO = "fps_info";
 
     private SecureSettingSwitchPreference mEnableHAL3;
     private CustomSeekBarPreference mTorchBrightness;
     private VibratorStrengthPreference mVibratorStrength;
+    private VibratorCallStrengthPreference mVibratorCallStrength;
+    private VibratorNotifStrengthPreference mVibratorNotifStrength;
     private Preference mKcal;
     private SecureSettingListPreference mSPECTRUM;
+    private Preference mAmbientPref;
     private SecureSettingSwitchPreference mEnableDirac;
     private SecureSettingListPreference mHeadsetType;
     private SecureSettingListPreference mPreset;
     private CustomSeekBarPreference mHeadphoneGain;
     private CustomSeekBarPreference mMicrophoneGain;
     private CustomSeekBarPreference mEarpieceGain;
+    private CustomSeekBarPreference mSpeakerGain;
     private SecureSettingSwitchPreference mFastcharge;
     private SecureSettingSwitchPreference mBacklightDimmer;
+    private static Context mContext;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.preferences_xiaomi_parts, rootKey);
+        mContext = this.getContext();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
 
         String device = FileUtils.getStringProp("ro.build.product", "unknown");
 
@@ -102,6 +122,16 @@ public class DeviceSettings extends PreferenceFragment implements
             return true;
         });
 
+        mAmbientPref = findPreference("ambient_display_gestures");
+        mAmbientPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Intent intent = new Intent(getContext(), AmbientGesturePreferenceActivity.class);
+                startActivity(intent);
+                return true;
+            }
+        });
+
         mSPECTRUM = (SecureSettingListPreference) findPreference(PREF_SPECTRUM);
         mSPECTRUM.setValue(FileUtils.getStringProp(SPECTRUM_SYSTEM_PROPERTY, "0"));
         mSPECTRUM.setSummary(mSPECTRUM.getEntry());
@@ -109,16 +139,22 @@ public class DeviceSettings extends PreferenceFragment implements
 
         if (FileUtils.fileWritable(BACKLIGHT_DIMMER_PATH)) {
             mBacklightDimmer = (SecureSettingSwitchPreference) findPreference(PREF_BACKLIGHT_DIMMER);
-            mBacklightDimmer.setChecked(FileUtils.getFileValueAsBoolean(BACKLIGHT_DIMMER_PATH, false));
-            mBacklightDimmer.setOnPreferenceChangeListener(this);
+            mBacklightDimmer.setEnabled(BacklightDimmer.isSupported());
+            mBacklightDimmer.setChecked(BacklightDimmer.isCurrentlyEnabled(this.getContext()));
+            mBacklightDimmer.setOnPreferenceChangeListener(new BacklightDimmer(getContext()));
         } else {
             getPreferenceScreen().removePreference(findPreference(PREF_BACKLIGHT_DIMMER));
         }
 
-        mVibratorStrength = (VibratorStrengthPreference) findPreference(KEY_VIBSTRENGTH);
-        if (mVibratorStrength != null) {
+	mVibratorStrength = (VibratorStrengthPreference) findPreference(KEY_VIBSTRENGTH);
+        if (mVibratorStrength != null)
             mVibratorStrength.setEnabled(VibratorStrengthPreference.isSupported());
-        }
+        mVibratorCallStrength = (VibratorCallStrengthPreference) findPreference(KEY_CALL_VIBSTRENGTH);
+        if (mVibratorCallStrength != null)
+            mVibratorCallStrength.setEnabled(VibratorCallStrengthPreference.isSupported());
+        mVibratorNotifStrength = (VibratorNotifStrengthPreference) findPreference(KEY_NOTIF_VIBSTRENGTH);
+        if (mVibratorNotifStrength != null)
+            mVibratorNotifStrength.setEnabled(VibratorNotifStrengthPreference.isSupported());
 
         boolean enhancerEnabled;
         try {
@@ -153,6 +189,9 @@ public class DeviceSettings extends PreferenceFragment implements
         mEarpieceGain = (CustomSeekBarPreference) findPreference(PREF_EARPIECE_GAIN);
         mEarpieceGain.setOnPreferenceChangeListener(this);
 
+        mSpeakerGain = (CustomSeekBarPreference) findPreference(PREF_SPEAKER_GAIN);
+        mSpeakerGain.setOnPreferenceChangeListener(this);
+
         if (FileUtils.fileWritable(USB_FASTCHARGE_PATH)) {
             mFastcharge = (SecureSettingSwitchPreference) findPreference(PREF_USB_FASTCHARGE);
             mFastcharge.setChecked(FileUtils.getFileValueAsBoolean(USB_FASTCHARGE_PATH, true));
@@ -160,7 +199,12 @@ public class DeviceSettings extends PreferenceFragment implements
         } else {
             getPreferenceScreen().removePreference(findPreference(CATEGORY_FASTCHARGE));
         }
+
+        SwitchPreference fpsInfo = (SwitchPreference) findPreference(PREF_KEY_FPS_INFO);
+        fpsInfo.setChecked(prefs.getBoolean(PREF_KEY_FPS_INFO, false));
+        fpsInfo.setOnPreferenceChangeListener(this);
     }
+
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object value) {
@@ -220,14 +264,23 @@ public class DeviceSettings extends PreferenceFragment implements
                 FileUtils.setValue(EARPIECE_GAIN_PATH, (int) value);
                 break;
 
+            case PREF_SPEAKER_GAIN:
+                 FileUtils.setValue(SPEAKER_GAIN_PATH, (int) value);
+                break;
+
             case PREF_USB_FASTCHARGE:
                 FileUtils.setValue(USB_FASTCHARGE_PATH, (boolean) value);
                 break;
 
-            case PREF_BACKLIGHT_DIMMER:
-                FileUtils.setValue(BACKLIGHT_DIMMER_PATH, (boolean) value);
+            case PREF_KEY_FPS_INFO:
+                boolean enabled = (Boolean) value;
+                Intent fpsinfo = new Intent(this.getContext(), FPSInfoService.class);
+                if (enabled) {
+                    this.getContext().startService(fpsinfo);
+                } else {
+                    this.getContext().stopService(fpsinfo);
+                }
                 break;
-
             default:
                 break;
         }

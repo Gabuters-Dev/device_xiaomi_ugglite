@@ -46,10 +46,19 @@
         android:title="@string/vibration_title">
 
         <com.xiaomi.parts.preferences.VibratorStrengthPreference
-            android:defaultValue="80"
-            android:key="vibration_strength"
+            android:key="vib_strength"
             android:icon="@drawable/ic_vibrate"
             android:title="@string/vibration_strength_title" />
+
+        <com.xiaomi.parts.preferences.VibratorNotifStrengthPreference
+             android:key="vib_notif_strength"
+             android:icon="@drawable/ic_vibrate_notif"
+             android:title="@string/vibration_notif_strength_title" />
+
+        <com.xiaomi.parts.preferences.VibratorCallStrengthPreference
+            android:key="vib_call_strength"
+            android:icon="@drawable/ic_vibrate_call"
+            android:title="@string/vibration_call_strength_title" />
 
     </PreferenceCategory>
 
@@ -68,6 +77,13 @@
                 android:targetClass="com.xiaomi.parts.kcal.KCalSettingsActivity"
                 android:targetPackage="com.xiaomi.parts.kcal" />
         </Preference>
+
+        <SwitchPreference
+            android:key="fps_info"
+            android:icon="@drawable/ic_fps_info"
+            android:title="@string/fps_info_title"
+            android:summary="@string/fps_info_summary"
+            android:persistent="true" />
 
         <com.xiaomi.parts.preferences.SecureSettingSwitchPreference
             android:defaultValue="false"
@@ -91,6 +107,18 @@
             android:summary="@string/spectrum_summary"
             android:icon="@drawable/ic_spectrum" 
             android:title="@string/spectrum_title" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+            android:title="@string/display_gestures">
+
+        <PreferenceScreen
+            android:key="ambient_display_gestures"
+            android:fragment="com.xiaomi.parts.ambient.AmbientGesturePreferenceActivity"
+            android:summary="@string/ambient_display_gestures_summary"
+            android:icon="@drawable/ic_doze"
+            android:title="@string/ambient_display_gestures_title" />
 
     </PreferenceCategory>
 
@@ -148,6 +176,14 @@
             app:min="-10"
             android:icon="@drawable/ic_earpiece"
             android:title="@string/earpiece_gain" />
+
+        <com.xiaomi.parts.preferences.SecureSettingCustomSeekBarPreference 
+            android:defaultValue="0"
+            android:key="speaker_gain" 
+            android:max="20"
+            app:min="-10" 
+            android:icon="@drawable/ic_speaker"
+            android:title="@string/speaker_gain" />
 
     </PreferenceCategory>
 

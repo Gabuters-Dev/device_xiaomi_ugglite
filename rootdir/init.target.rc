@@ -26,15 +26,15 @@
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 #
-
+ 
 on fs
     wait /dev/block/platform/soc/${ro.boot.bootdevice}
     symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
-
+ 
     mount_all /vendor/etc/fstab.qcom
     write /proc/sys/vm/page-cluster 0
     write /proc/sys/vm/swappiness 100
-
+ 
     # Set permissions for persist partition
     chown root system /mnt/vendor/persist
     chmod 0771 /mnt/vendor/persist
@@ -44,34 +44,34 @@ on fs
     mkdir /mnt/vendor/persist/data 0700 system system
     mkdir /mnt/vendor/persist/display 0770 system graphics
     mkdir /mnt/vendor/persist/time 0770 system system
-
+ 
     setprop sys.usb.ffs.aio_compat 1
-
+ 
 on post-fs-data
     mkdir /persist/data/sfs 0700 system system
     mkdir /persist/data/tz 0700 system system
     mkdir /data/misc/hbtp 0750 system system
     mkdir /data/misc/dts 0770 media audio
-
+ 
 # Start camera server as daemon
 service qcamerasvr /vendor/bin/mm-qcamera-daemon
     class main
     user camera
     group camera system inet input graphics
     writepid /dev/cpuset/system-background/tasks
-
+ 
 # Allow usb charging to be disabled peristently
 on property:persist.usb.chgdisabled=1
     write /sys/class/power_supply/battery/charging_enabled 0
-
+ 
 on property:persist.usb.chgdisabled=0
     write /sys/class/power_supply/battery/charging_enabled 1
-
+ 
 service vendor.qseecomd /vendor/bin/qseecomd
     class core
     user root
     group root
-
+ 
 service thermal-engine /vendor/bin/thermal-engine -c ${sys.qcom.thermalcfg:-/vendor/etc/thermal-engine.conf}
     class main
     user root
@@ -80,20 +80,20 @@ service thermal-engine /vendor/bin/thermal-engine -c ${sys.qcom.thermalcfg:-/ven
     socket thermal-recv-passive-client stream 0666 system system
     socket thermal-send-rule stream 0660 system system
     group root
-
+ 
 service wcnss-service /vendor/bin/wcnss_service
     class late_start
     user system
     group system wifi radio
     oneshot
-
+ 
 ## imsdatadaemon starts with root and UID will be downgraded to SYSTEM.
 service vendor.imsqmidaemon /system/vendor/bin/imsqmidaemon
     class main
     user system
     socket ims_qmid stream 0660 system radio
     group radio log diag
-
+ 
 # imsdatadaemon starts with root and UID will be downgraded to SYSTEM.
 service vendor.imsdatadaemon /system/vendor/bin/imsdatadaemon
     class main
@@ -101,103 +101,62 @@ service vendor.imsdatadaemon /system/vendor/bin/imsdatadaemon
     socket ims_datad stream 0660 system radio
     group system wifi radio inet log diag
     disabled
-
+ 
 on property:vendor.ims.QMI_DAEMON_STATUS=1
     start vendor.imsdatadaemon
-
+ 
 service vendor.ims_rtp_daemon /vendor/bin/ims_rtp_daemon
     class main
     user system
     group radio diag inet log
-
+ 
 service vendor.imsrcsservice /vendor/bin/imsrcsd
     class main
     user system
     group radio diag inet log
-
+ 
 on property:vendor.ims.DATA_DAEMON_STATUS=1
     restart vendor.ims_rtp_daemon
-
+ 
 service ppd /vendor/bin/mm-pp-dpps
     class hal
     user system
     group system graphics
     socket pps stream 0660 system system
-
+ 
 on property:init.svc.surfaceflinger=restarting
     restart vendor.hwcomposer-2-1
-
+ 
 on charger
     setprop sys.usb.configfs 0
     start vendor.power_off_alarm
-
+ 
 service adsprpcd /vendor/bin/adsprpcd
     class main
     user media
     group media
-
+ 
 service vendor.per_mgr /vendor/bin/pm-service
     class core
     user system
     group system net_raw
     writepid /dev/cpuset/system-background/tasks
-
+ 
 service vendor.per_proxy /vendor/bin/pm-proxy
     class core
     user system
     group system
     disabled
     writepid /dev/cpuset/system-background/tasks
-
+ 
 on property:init.svc.vendor.per_mgr=running
     start vendor.per_proxy
-
+ 
 on property:sys.powerctl=*
     stop vendor.per_proxy
     stop vendor.ims_rtp_daemon
-
+ 
 on property:sys.boot_completed=1
    # Enable ZRAM on boot_complete
    swapon_all /vendor/etc/fstab.qcom
-
-# KCAL permissions
-  chown system system /sys/devices/platform/kcal_ctrl.0/kcal
-  chown system system /sys/devices/platform/kcal_ctrl.0/kcal_enable
-  chown system system /sys/devices/platform/kcal_ctrl.0/kcal_cont
-  chown system system /sys/devices/platform/kcal_ctrl.0/kcal_sat
-  chown system system /sys/devices/platform/kcal_ctrl.0/kcal_hue
-  chown system system /sys/devices/platform/kcal_ctrl.0/kcal_min
-  chown system system /sys/devices/platform/kcal_ctrl.0/kcal_val
-  chmod 0660 /sys/devices/platform/kcal_ctrl.0/kcal
-  chmod 0660 /sys/devices/platform/kcal_ctrl.0/kcal_enable
-  chmod 0660 /sys/devices/platform/kcal_ctrl.0/kcal_cont
-  chmod 0660 /sys/devices/platform/kcal_ctrl.0/kcal_sat
-  chmod 0660 /sys/devices/platform/kcal_ctrl.0/kcal_hue
-  chmod 0660 /sys/devices/platform/kcal_ctrl.0/kcal_min
-  chmod 0660 /sys/devices/platform/kcal_ctrl.0/kcal_val
-
-# Vibrator permissions
-  chown root system /sys/class/timed_output/vibrator/vtg_level
-  chmod 0660 /sys/class/timed_output/vibrator/vtg_level
-
-# Audio gain permissions
-  chown system system /sys/kernel/sound_control/headphone_gain
-  chown system system /sys/kernel/sound_control/mic_gain
-  chown system system /sys/kernel/sound_control/earpiece_gain
-  chmod 0660 /sys/kernel/sound_control/headphone_gain
-  chmod 0660 /sys/kernel/sound_control/mic_gain
-  chmod 0660 /sys/kernel/sound_control/earpiece_gain
-
-# Torch permissions
-  chmod 0660 /sys/devices/soc/qpnp-flash-led-25/leds/led:torch_0/max_brightness
-  chmod 0660 /sys/devices/soc/qpnp-flash-led-25/leds/led:torch_1/max_brightness
-  chown system system /sys/devices/soc/qpnp-flash-led-25/leds/led:torch_0/max_brightness
-  chown system system /sys/devices/soc/qpnp-flash-led-25/leds/led:torch_1/max_brightness
-
-# USB Fastcharge
-  chown system system /sys/kernel/fast_charge/force_fast_charge
-  chmod 0660 /sys/kernel/fast_charge/force_fast_charge
-
-# Backlight Dimmer
-  chown system system /sys/module/mdss_fb/parameters/backlight_dimmer
-  chmod 0660 /sys/module/mdss_fb/parameters/backlight_dimmer
+ 
