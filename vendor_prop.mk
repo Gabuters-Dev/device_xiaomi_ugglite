@@ -107,6 +107,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     debug.cpurend.vsync=false \
     debug.gralloc.gfx_ubwc_disable=0 \
     debug.hwui.use_buffer_age=false \
+    debug.performance.tuning=1 \
     debug.sdm.support_writeback=0 \
     debug.sf.disable_backpressure=1 \
     debug.sf.hw=1 \
