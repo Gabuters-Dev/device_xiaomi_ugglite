@@ -3310,6 +3310,9 @@ case "$target" in
     echo 0 > /sys/devices/system/cpu/cpufreq/policy0/schedutil/pl
     echo 576000 > /sys/devices/system/cpu/cpufreq/policy0/scaling_min_freq
     echo 650000 > /sys/devices/system/cpu/cpufreq/policy0/schedutil/rtg_boost_freq
+    # configure input boost settings
+    echo "0:1017600" > /sys/devices/system/cpu/cpu_boost/input_boost_freq
+    echo 80 > /sys/devices/system/cpu/cpu_boost/input_boost_ms
 
     # configure governor settings for gold cluster
     echo "schedutil" > /sys/devices/system/cpu/cpufreq/policy6/scaling_governor
