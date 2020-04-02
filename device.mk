@@ -145,10 +145,6 @@ PRODUCT_PACKAGES += \
     android.hardware.memtrack@1.0-impl \
     android.hardware.memtrack@1.0-service
 
-# Device-specific settings
-PRODUCT_PACKAGES += \
-    XiaomiParts
-
 # DRM
 PRODUCT_PACKAGES += \
     android.hardware.drm@1.0-impl \
@@ -484,6 +480,10 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_BOOT_JARS += \
     WfdCommon
+
+# XiaomiParts
+PRODUCT_PACKAGES += \
+    XiaomiParts
 
 # Inherit common proprietary files
 $(call inherit-product-if-exists, vendor/xiaomi/ugglite/ugglite-vendor.mk)
