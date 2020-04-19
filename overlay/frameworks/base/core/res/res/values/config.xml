@@ -332,6 +332,7 @@
 
     <!-- Whether or not swipe up gesture's opt-in setting is available on this device -->
     <bool name="config_swipe_up_gesture_setting_available">true</bool>
+<<<<<<< HEAD
 
     <!-- The list of components which should be automatically disabled for a specific device. -->
     <string-array name="config_deviceDisabledComponents" translatable="false">
@@ -353,12 +354,16 @@
          one bar higher than they actually are -->
     <bool name="config_inflateSignalStrength">true</bool>
 
+=======
+    
+>>>>>>> d1881ff... riva: Make UI more smoother
     <!-- Flag indicating whether the surface flinger has limited
          alpha compositing functionality in hardware.  If set, the window
          manager will disable alpha trasformation in animations where not
          strictly needed. -->
     <bool name="config_sf_limitedAlpha">true</bool>
 
+<<<<<<< HEAD
      <!-- Enables or disables fading edges when marquee is enabled in TextView.
          Off by default, since the framebuffer readback used to implement the
          fading edges is prohibitively expensive on most GPUs. -->
@@ -376,4 +381,6 @@
     <!-- Whether the display blanks itself when transitioning from a doze to a non-doze state -->
     <bool name="config_displayBlanksAfterDoze">false</bool>
 
+=======
+>>>>>>> d1881ff... riva: Make UI more smoother
 </resources>
