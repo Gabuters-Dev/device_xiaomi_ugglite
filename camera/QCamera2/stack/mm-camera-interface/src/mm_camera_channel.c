@@ -532,7 +532,7 @@ static void mm_channel_process_stream_buf(mm_camera_cmdcb_t * cmd_cb,
                     ch_obj->isConfigCapture = FALSE;
                 }
 
-                if (ch_obj->isConfigCapture && ch_obj->cur_capture_idx < MAX_CAPTURE_BATCH_NUM) {
+                if (ch_obj->isConfigCapture) {
                     if (ch_obj->frameConfig.configs[ch_obj->cur_capture_idx].num_frames != 0) {
                         ch_obj->frameConfig.configs[ch_obj->cur_capture_idx].num_frames--;
                     } else {
@@ -1288,9 +1288,7 @@ uint32_t mm_channel_add_stream(mm_channel_t *my_obj)
         LOGE("streams reach max, no more stream allowed to add");
         return s_hdl;
     }
-    pthread_condattr_t cond_attr;
-    pthread_condattr_init(&cond_attr);
-    pthread_condattr_setclock(&cond_attr, CLOCK_MONOTONIC);
+
     /* initialize stream object */
     memset(stream_obj, 0, sizeof(mm_stream_t));
     stream_obj->fd = -1;
@@ -1299,8 +1297,7 @@ uint32_t mm_channel_add_stream(mm_channel_t *my_obj)
     pthread_mutex_init(&stream_obj->buf_lock, NULL);
     pthread_mutex_init(&stream_obj->cb_lock, NULL);
     pthread_mutex_init(&stream_obj->cmd_lock, NULL);
-    pthread_cond_init(&stream_obj->buf_cond, &cond_attr);
-    pthread_condattr_destroy(&cond_attr);
+    pthread_cond_init(&stream_obj->buf_cond, NULL);
     memset(stream_obj->buf_status, 0,
             sizeof(stream_obj->buf_status));
     stream_obj->state = MM_STREAM_STATE_INITED;
@@ -2924,14 +2921,12 @@ int32_t mm_channel_superbuf_comp_and_enqueue(
                         }
                     }
                     queue->que.size--;
-                    last_buf_ptr = last_buf_ptr->next;
                     cam_list_del_node(&node->list);
                     free(node);
                     free(super_buf);
                     unmatched_bundles--;
-                } else {
-                    last_buf_ptr = last_buf_ptr->next;
                 }
+                last_buf_ptr = last_buf_ptr->next;
             }
 
             if (queue->attr.max_unmatched_frames < unmatched_bundles) {

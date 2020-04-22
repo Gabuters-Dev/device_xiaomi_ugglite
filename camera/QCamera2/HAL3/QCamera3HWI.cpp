@@ -91,9 +91,8 @@ namespace qcamera {
 #define DEFAULT_VIDEO_FPS      (30.0)
 #define MAX_HFR_BATCH_SIZE     (8)
 #define REGIONS_TUPLE_COUNT    5
-#define HDR_PLUS_PERF_TIME_OUT  (7000) // milliseconds
 // Set a threshold for detection of missing buffers //seconds
-#define MISSING_REQUEST_BUF_TIMEOUT 3
+#define MISSING_REQUEST_BUF_TIMEOUT 10
 #define FLUSH_TIMEOUT 3
 #define METADATA_MAP_SIZE(MAP) (sizeof(MAP)/sizeof(MAP[0]))
 
@@ -108,6 +107,9 @@ namespace qcamera {
 #define PER_CONFIGURATION_SIZE_3 (3)
 
 #define TIMEOUT_NEVER -1
+
+// Whether to check for the GPU stride padding, or use the default
+//#define CHECK_GPU_PIXEL_ALIGNMENT
 
 cam_capability_t *gCamCapability[MM_CAMERA_MAX_NUM_SENSORS];
 const camera_metadata_t *gStaticMetadata[MM_CAMERA_MAX_NUM_SENSORS];
@@ -402,17 +404,10 @@ QCamera3HardwareInterface::QCamera3HardwareInterface(uint32_t cameraId,
     // TODO: hardcode for now until mctl add support for min_num_pp_bufs
     //TBD - To see if this hardcoding is needed. Check by printing if this is filled by mctl to 3
     gCamCapability[cameraId]->min_num_pp_bufs = 3;
-    pthread_condattr_t mCondAttr;
 
-    pthread_condattr_init(&mCondAttr);
-    pthread_condattr_setclock(&mCondAttr, CLOCK_MONOTONIC);
+    pthread_cond_init(&mBuffersCond, NULL);
 
-    pthread_cond_init(&mBuffersCond, &mCondAttr);
-
-    pthread_cond_init(&mRequestCond, &mCondAttr);
-
-    pthread_condattr_destroy(&mCondAttr);
-
+    pthread_cond_init(&mRequestCond, NULL);
     mPendingLiveRequest = 0;
     mCurrentRequestId = -1;
     pthread_mutex_init(&mMutex, NULL);
@@ -449,7 +444,8 @@ QCamera3HardwareInterface::QCamera3HardwareInterface(uint32_t cameraId,
     //Load and read GPU library.
     lib_surface_utils = NULL;
     LINK_get_surface_pixel_alignment = NULL;
-    mSurfaceStridePadding = CAM_PAD_TO_32;
+    mSurfaceStridePadding = CAM_PAD_TO_64;
+#ifdef CHECK_GPU_PIXEL_ALIGNMENT
     lib_surface_utils = dlopen("libadreno_utils.so", RTLD_NOW);
     if (lib_surface_utils) {
         *(void **)&LINK_get_surface_pixel_alignment =
@@ -459,6 +455,7 @@ QCamera3HardwareInterface::QCamera3HardwareInterface(uint32_t cameraId,
          }
          dlclose(lib_surface_utils);
     }
+#endif
 }
 
 /*===========================================================================
@@ -615,6 +612,7 @@ QCamera3HardwareInterface::~QCamera3HardwareInterface()
     m_perfLock.lock_deinit();
 
     pthread_cond_destroy(&mRequestCond);
+
     pthread_cond_destroy(&mBuffersCond);
 
     pthread_mutex_destroy(&mMutex);
@@ -1442,7 +1440,6 @@ int QCamera3HardwareInterface::configureStreamsPerfLocked(
     LOGD("mOpMode: %d", mOpMode);
 
     mCurrentSceneMode = 0;
-    m_fwAeMode = ANDROID_CONTROL_AE_MODE_ON;
 
     /* first invalidate all the steams in the mStreamList
      * if they appear again, they will be validated */
@@ -3026,7 +3023,7 @@ void QCamera3HardwareInterface::handleMetadataWithLock(
                 i->bUrgentReceived = 1;
                 // Extract 3A metadata
                 result.result =
-                    translateCbUrgentMetadataToResultMetadata(metadata, i->fwkAeMode);
+                    translateCbUrgentMetadataToResultMetadata(metadata);
                 // Populate metadata result
                 result.frame_number = urgent_frame_number;
                 result.num_output_buffers = 0;
@@ -3334,8 +3331,8 @@ void QCamera3HardwareInterface::restoreHdrScene(
 void QCamera3HardwareInterface::hdrPlusPerfLock(
         mm_camera_super_buf_t *metadata_buf)
 {
-    if ((NULL == metadata_buf) || (ERROR == mState)) {
-        LOGE("metadata_buf is NULL or return when mState is error");
+    if (NULL == metadata_buf) {
+        LOGE("metadata_buf is NULL");
         return;
     }
     metadata_buffer_t *metadata =
@@ -3350,7 +3347,8 @@ void QCamera3HardwareInterface::hdrPlusPerfLock(
         return;
     }
 
-    //acquire perf lock for 5 sec after the last HDR frame is captured
+    //acquire perf lock for 2 secs after the last HDR frame is captured
+    constexpr uint32_t HDR_PLUS_PERF_TIME_OUT = 2000;
     if ((p_frame_number_valid != NULL) && *p_frame_number_valid) {
         if ((p_frame_number != NULL) &&
                 (mLastCustIntentFrmNum == (int32_t)*p_frame_number)) {
@@ -3680,7 +3678,7 @@ int32_t QCamera3HardwareInterface::orchestrateRequest(
         int32_t expCompensation = GB_HDR_HALF_STEP_EV;
         uint8_t aeLock = 1;
         modified_meta.update(ANDROID_CONTROL_AE_EXPOSURE_COMPENSATION, &expCompensation, 1);
-        //modified_meta.update(ANDROID_CONTROL_AE_LOCK, &aeLock, 1);
+        modified_meta.update(ANDROID_CONTROL_AE_LOCK, &aeLock, 1);
         camera_metadata_t *modified_settings = modified_meta.release();
         request->settings = modified_settings;
 
@@ -3699,7 +3697,7 @@ int32_t QCamera3HardwareInterface::orchestrateRequest(
         expCompensation = 0;
         aeLock = 1;
         modified_meta.update(ANDROID_CONTROL_AE_EXPOSURE_COMPENSATION, &expCompensation, 1);
-        //modified_meta.update(ANDROID_CONTROL_AE_LOCK, &aeLock, 1);
+        modified_meta.update(ANDROID_CONTROL_AE_LOCK, &aeLock, 1);
         modified_settings = modified_meta.release();
         request->settings = modified_settings;
 
@@ -3736,7 +3734,7 @@ int32_t QCamera3HardwareInterface::orchestrateRequest(
         expCompensation = GB_HDR_2X_STEP_EV;
         aeLock = 1;
         modified_meta.update(ANDROID_CONTROL_AE_EXPOSURE_COMPENSATION, &expCompensation, 1);
-        //modified_meta.update(ANDROID_CONTROL_AE_LOCK, &aeLock, 1);
+        modified_meta.update(ANDROID_CONTROL_AE_LOCK, &aeLock, 1);
         modified_settings = modified_meta.release();
         request->settings = modified_settings;
 
@@ -4648,13 +4646,6 @@ no_error:
     }
     pendingRequest.capture_intent = mCaptureIntent;
 
-    if (meta.exists(ANDROID_CONTROL_AE_MODE)) {
-          pendingRequest.fwkAeMode = (uint8_t)meta.find(ANDROID_CONTROL_AE_MODE).data.u8[0];
-          m_fwAeMode = pendingRequest.fwkAeMode;
-    } else {
-          pendingRequest.fwkAeMode = m_fwAeMode;
-    }
-
     //extract CAC info
     if (meta.exists(ANDROID_COLOR_CORRECTION_ABERRATION_MODE)) {
         mCacMode =
@@ -4997,7 +4988,7 @@ no_error:
     // Added a timed condition wait
     struct timespec ts;
     uint8_t isValidTimeout = 1;
-    rc = clock_gettime(CLOCK_MONOTONIC, &ts);
+    rc = clock_gettime(CLOCK_REALTIME, &ts);
     if (rc < 0) {
       isValidTimeout = 0;
       LOGE("Error reading the real time clock!!");
@@ -5244,7 +5235,7 @@ int QCamera3HardwareInterface::flushPerf()
     }
 
     /* wait on a signal that buffers were received */
-    rc = clock_gettime(CLOCK_MONOTONIC, &timeout);
+    rc = clock_gettime(CLOCK_REALTIME, &timeout);
     if (rc < 0) {
         LOGE("Error reading the real time clock, cannot use timed wait");
     } else {
@@ -5378,8 +5369,8 @@ void QCamera3HardwareInterface::captureResultCb(mm_camera_super_buf_t *metadata_
             handleBatchMetadata(metadata_buf,
                     true /* free_and_bufdone_meta_buf */);
         } else { /* mBatchSize = 0 */
-            pthread_mutex_lock(&mMutex);
             hdrPlusPerfLock(metadata_buf);
+            pthread_mutex_lock(&mMutex);
             handleMetadataWithLock(metadata_buf,
                     true /* free_and_bufdone_meta_buf */,
                     false /* first frame of batch metadata */ );
@@ -5779,7 +5770,6 @@ QCamera3HardwareInterface::translateFromHalMetadata(
     }
 
     IF_META_AVAILABLE(int32_t, sensorSensitivity, CAM_INTF_META_SENSOR_SENSITIVITY, metadata) {
-        if(*sensorSensitivity < 100) *sensorSensitivity = 100;
         LOGD("sensorSensitivity = %d", *sensorSensitivity);
         camMetadata.update(ANDROID_SENSOR_SENSITIVITY, sensorSensitivity, 1);
 
@@ -6230,6 +6220,12 @@ QCamera3HardwareInterface::translateFromHalMetadata(
                 hAeRegions->rect.height);
     }
 
+    IF_META_AVAILABLE(uint32_t, afState, CAM_INTF_META_AF_STATE, metadata) {
+        uint8_t fwk_afState = (uint8_t) *afState;
+        camMetadata.update(ANDROID_CONTROL_AF_STATE, &fwk_afState, 1);
+        LOGD("urgent Metadata : ANDROID_CONTROL_AF_STATE %u", *afState);
+    }
+
     IF_META_AVAILABLE(float, focusDistance, CAM_INTF_META_LENS_FOCUS_DISTANCE, metadata) {
         camMetadata.update(ANDROID_LENS_FOCUS_DISTANCE , focusDistance, 1);
     }
@@ -6590,7 +6586,7 @@ mm_jpeg_exif_params_t QCamera3HardwareInterface::get3AExifParams()
  *==========================================================================*/
 camera_metadata_t*
 QCamera3HardwareInterface::translateCbUrgentMetadataToResultMetadata
-                                (metadata_buffer_t *metadata, uint8_t fwkAeMode)
+                                (metadata_buffer_t *metadata)
 {
     CameraMetadata camMetadata;
     camera_metadata_t *resultMetadata;
@@ -6617,12 +6613,6 @@ QCamera3HardwareInterface::translateCbUrgentMetadataToResultMetadata
         uint8_t fwk_ae_state = (uint8_t) *ae_state;
         camMetadata.update(ANDROID_CONTROL_AE_STATE, &fwk_ae_state, 1);
         LOGD("urgent Metadata : ANDROID_CONTROL_AE_STATE %u", *ae_state);
-    }
-
-    IF_META_AVAILABLE(uint32_t, afState, CAM_INTF_META_AF_STATE, metadata) {
-        uint8_t fwk_afState = (uint8_t) *afState;
-        camMetadata.update(ANDROID_CONTROL_AF_STATE, &fwk_afState, 1);
-        LOGD("urgent Metadata : ANDROID_CONTROL_AF_STATE %u", *afState);
     }
 
     IF_META_AVAILABLE(uint32_t, focusMode, CAM_INTF_PARM_FOCUS_MODE, metadata) {
@@ -6673,7 +6663,6 @@ QCamera3HardwareInterface::translateCbUrgentMetadataToResultMetadata
         redeye = *pRedeye;
     }
 
-
     if (1 == redeye) {
         fwk_aeMode = ANDROID_CONTROL_AE_MODE_ON_AUTO_FLASH_REDEYE;
         camMetadata.update(ANDROID_CONTROL_AE_MODE, &fwk_aeMode, 1);
@@ -6687,10 +6676,7 @@ QCamera3HardwareInterface::translateCbUrgentMetadataToResultMetadata
             LOGE("Unsupported flash mode %d", flashMode);
         }
     } else if (aeMode == CAM_AE_MODE_ON) {
-        if (CAM_FLASH_MODE_OFF == flashMode)
-            fwk_aeMode = fwkAeMode;
-        else
-            fwk_aeMode = ANDROID_CONTROL_AE_MODE_ON;
+        fwk_aeMode = ANDROID_CONTROL_AE_MODE_ON;
         camMetadata.update(ANDROID_CONTROL_AE_MODE, &fwk_aeMode, 1);
     } else if (aeMode == CAM_AE_MODE_OFF) {
         fwk_aeMode = ANDROID_CONTROL_AE_MODE_OFF;
@@ -7513,14 +7499,8 @@ int QCamera3HardwareInterface::initStaticMetadata(uint32_t cameraId)
     staticInfo.update(ANDROID_SENSOR_INFO_WHITE_LEVEL,
             &gCamCapability[cameraId]->white_level, 1);
 
-    if(facingBack && gCamCapability[cameraId]->black_level_pattern[0] < 16) {
-        int32_t black_level_pattern_custom[BLACK_LEVEL_PATTERN_CNT] = {32,32,32,32};
-        staticInfo.update(ANDROID_SENSOR_BLACK_LEVEL_PATTERN,
-                black_level_pattern_custom, BLACK_LEVEL_PATTERN_CNT);
-    } else {
-        staticInfo.update(ANDROID_SENSOR_BLACK_LEVEL_PATTERN,
-                gCamCapability[cameraId]->black_level_pattern, BLACK_LEVEL_PATTERN_CNT);
-    }
+    staticInfo.update(ANDROID_SENSOR_BLACK_LEVEL_PATTERN,
+            gCamCapability[cameraId]->black_level_pattern, BLACK_LEVEL_PATTERN_CNT);
 
 #ifndef USE_HAL_3_3
     bool hasBlackRegions = false;
@@ -8338,7 +8318,7 @@ int QCamera3HardwareInterface::initStaticMetadata(uint32_t cameraId)
         available_result_keys.add(ANDROID_STATISTICS_FACE_LANDMARKS);
     }
 #ifndef USE_HAL_3_3
-    if (hasBlackRegions) {
+    {
         available_result_keys.add(ANDROID_SENSOR_DYNAMIC_BLACK_LEVEL);
         available_result_keys.add(ANDROID_SENSOR_DYNAMIC_WHITE_LEVEL);
     }
@@ -9119,31 +9099,17 @@ camera_metadata_t* QCamera3HardwareInterface::translateCapabilityToMetadata(int 
 
     /*target fps range: use maximum range for picture, and maximum fixed range for video*/
     float max_range = 0.0;
-    float max_fixed_fps = 0.0;
     int32_t fps_range[2] = {0, 0};
     for (uint32_t i = 0; i < gCamCapability[mCameraId]->fps_ranges_tbl_cnt;
             i++) {
         float range = gCamCapability[mCameraId]->fps_ranges_tbl[i].max_fps -
             gCamCapability[mCameraId]->fps_ranges_tbl[i].min_fps;
-        if (type == CAMERA3_TEMPLATE_PREVIEW ||
-                type == CAMERA3_TEMPLATE_STILL_CAPTURE ||
-                type == CAMERA3_TEMPLATE_ZERO_SHUTTER_LAG) {
-            if (range > max_range) {
-                fps_range[0] =
-                    (int32_t)gCamCapability[mCameraId]->fps_ranges_tbl[i].min_fps;
-                fps_range[1] =
-                    (int32_t)gCamCapability[mCameraId]->fps_ranges_tbl[i].max_fps;
-                max_range = range;
-            }
-        } else {
-            if (range < 0.01 && max_fixed_fps <
-                    gCamCapability[mCameraId]->fps_ranges_tbl[i].max_fps) {
-                fps_range[0] =
-                    (int32_t)gCamCapability[mCameraId]->fps_ranges_tbl[i].min_fps;
-                fps_range[1] =
-                    (int32_t)gCamCapability[mCameraId]->fps_ranges_tbl[i].max_fps;
-                max_fixed_fps = gCamCapability[mCameraId]->fps_ranges_tbl[i].max_fps;
-            }
+        if (range > max_range) {
+            fps_range[0] =
+                (int32_t)gCamCapability[mCameraId]->fps_ranges_tbl[i].min_fps;
+            fps_range[1] =
+                (int32_t)gCamCapability[mCameraId]->fps_ranges_tbl[i].max_fps;
+            max_range = range;
         }
     }
     settings.update(ANDROID_CONTROL_AE_TARGET_FPS_RANGE, fps_range, 2);
@@ -9238,7 +9204,7 @@ camera_metadata_t* QCamera3HardwareInterface::translateCapabilityToMetadata(int 
     /* CDS default */
     char prop[PROPERTY_VALUE_MAX];
     memset(prop, 0, sizeof(prop));
-    property_get("persist.vendor.camera.CDS", prop, "Off");
+    property_get("persist.vendor.camera.CDS", prop, "Auto");
     cam_cds_mode_type_t cds_mode = CAM_CDS_MODE_AUTO;
     cds_mode = lookupProp(CDS_MAP, METADATA_MAP_SIZE(CDS_MAP), prop);
     if (CAM_CDS_MODE_MAX == cds_mode) {
@@ -10004,10 +9970,7 @@ int QCamera3HardwareInterface::translateToHalMetadata
         if (frame_settings.exists(ANDROID_CONTROL_AE_MODE)) {
             uint8_t fwk_aeMode =
                 frame_settings.find(ANDROID_CONTROL_AE_MODE).data.u8[0];
-            uint8_t fwk_flashMode =
-                 frame_settings.find(ANDROID_FLASH_MODE).data.u8[0];
-            if ((fwk_aeMode > ANDROID_CONTROL_AE_MODE_ON) &&
-                 (fwk_flashMode != ANDROID_FLASH_MODE_OFF)) {
+            if (fwk_aeMode > ANDROID_CONTROL_AE_MODE_ON) {
                 respectFlashMode = 0;
                 LOGH("AE Mode controls flash, ignore android.flash.mode");
             }

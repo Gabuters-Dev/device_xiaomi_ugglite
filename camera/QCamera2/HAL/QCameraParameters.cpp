@@ -58,6 +58,7 @@ extern "C" {
 #define CAMERA_MIN_LONGSHOT_STAGES 2
 #define FOCUS_PERCISION 0.0000001
 
+
 namespace qcamera {
 // Parameter keys to communicate between camera application and driver.
 const char QCameraParameters::KEY_QC_SUPPORTED_HFR_SIZES[] = "hfr-size-values";
@@ -491,9 +492,6 @@ const char QCameraParameters::KEY_QC_NOISE_REDUCTION_MODE_VALUES[] = "noise-redu
 const char QCameraParameters::KEY_TS_MAKEUP[] = "tsmakeup";
 const char QCameraParameters::KEY_TS_MAKEUP_WHITEN[] = "tsmakeup_whiten";
 const char QCameraParameters::KEY_TS_MAKEUP_CLEAN[] = "tsmakeup_clean";
-const char QCameraParameters::KEY_XM_MAKEUP[] = "xiaomi-still-beautify-values";
-const char QCameraParameters::KEY_XM_MAKEUP_WHITEN[] = "xiaomi-beauty-skin-color";
-const char QCameraParameters::KEY_XM_MAKEUP_CLEAN[] = "xiaomi-beauty-skin-smooth";
 #endif
 
 //KEY to share HFR batch size with video encoder.
@@ -746,7 +744,7 @@ const QCameraParameters::QCameraMap<cam_antibanding_mode_type>
 const QCameraParameters::QCameraMap<cam_iso_mode_type>
         QCameraParameters::ISO_MODES_MAP[] = {
     { ISO_AUTO,  CAM_ISO_MODE_AUTO },
-    { ISO_HJR,   CAM_ISO_MODE_AUTO },
+    { ISO_HJR,   CAM_ISO_MODE_DEBLUR },
     { ISO_100,   CAM_ISO_MODE_100 },
     { ISO_200,   CAM_ISO_MODE_200 },
     { ISO_400,   CAM_ISO_MODE_400 },
@@ -909,7 +907,6 @@ static inline bool isOEMFeat1PropEnabled()
  *==========================================================================*/
 QCameraParameters::QCameraParameters()
     : CameraParameters(),
-      m_bDualCameraMode(false),
       m_reprocScaleParam(),
       mCommon(),
       m_pCapability(NULL),
@@ -998,6 +995,7 @@ QCameraParameters::QCameraParameters()
       mAecSkipDisplayFrameBound(0),
       m_bQuadraCfa(false),
       m_bSmallJpegSize(false),
+      m_bDualCameraMode(false),
       mDualCamId(0),
       m_bMainCamera(false)
 {
@@ -1053,7 +1051,6 @@ QCameraParameters::QCameraParameters()
  *==========================================================================*/
 QCameraParameters::QCameraParameters(const String8 &params)
     : CameraParameters(params),
-    m_bDualCameraMode(false),
     m_reprocScaleParam(),
     m_pCapability(NULL),
     m_pCamOpsTbl(NULL),
@@ -1134,6 +1131,7 @@ QCameraParameters::QCameraParameters(const String8 &params)
     mAecSkipDisplayFrameBound(0),
     m_bQuadraCfa(false),
     m_bSmallJpegSize(false),
+    m_bDualCameraMode(false),
     mDualCamId(0),
     m_bMainCamera(false)
 {
@@ -1563,8 +1561,6 @@ int32_t QCameraParameters::setPictureSize(const QCameraParameters& params)
 {
     int width, height;
     params.getPictureSize(&width, &height);
-    originalSnapshotDim.width = width;
-    originalSnapshotDim.height = height;
     int old_width, old_height;
     CameraParameters::getPictureSize(&old_width, &old_height);
 
@@ -1587,11 +1583,8 @@ int32_t QCameraParameters::setPictureSize(const QCameraParameters& params)
             }
         }
     }else{
-          m_reprocScaleParam.isBokehEnabled = m_bDualCameraMode;
-          m_reprocScaleParam.bokehSnapshotWidth = m_pCapability->bokeh_snapshot_size.width;
-          m_reprocScaleParam.bokehSnapshotHeight = m_pCapability->bokeh_snapshot_size.height;
-         //should use scaled picture size table to validate
-         if(m_reprocScaleParam.setValidatePicSize(width, height) == NO_ERROR){
+        //should use scaled picture size table to validate
+        if(m_reprocScaleParam.setValidatePicSize(width, height) == NO_ERROR){
             // check if need to restart preview in case of picture size change
             if ((m_bZslMode || m_bRecordingHint) &&
                 (width != old_width || height != old_height)) {
@@ -1606,7 +1599,6 @@ int32_t QCameraParameters::setPictureSize(const QCameraParameters& params)
             updateViewAngles();
             return NO_ERROR;
         }
-
     }
     if (m_relCamSyncInfo.mode == CAM_MODE_SECONDARY) {
         char prop[PROPERTY_VALUE_MAX];
@@ -4186,60 +4178,6 @@ int32_t QCameraParameters::setTsMakeup(const QCameraParameters& params)
     return NO_ERROR;
 }
 
-/*===========================================================================
- * FUNCTION   : setXmMakeup
- *
- * DESCRIPTION: set setXmMakeup from user setting
- *
- * PARAMETERS :
- *   @params  : user setting parameters
- *
- * RETURN     : int32_t type of status
- *              NO_ERROR  -- success
- *              none-zero failure code
- *==========================================================================*/
-int32_t QCameraParameters::setXmMakeup(const QCameraParameters& params)
-{
-    const char *str = params.get(KEY_XM_MAKEUP);
-    const char *prev_str = get(KEY_XM_MAKEUP);
-
-    LOGH("str =%s & prev_str =%s", str, prev_str);
-
-    if (str != NULL) {
-        if (prev_str == NULL) {
-            m_bNeedRestart = true;
-            set(KEY_XM_MAKEUP, str);
-        } else if (strcmp(str, prev_str) != 0) {
-            const char* prev_enabled = strrchr(prev_str, ':');
-            const char* curr_enabled = strrchr(str, ':');
-            if (prev_enabled && curr_enabled) {
-                prev_enabled++;
-                curr_enabled++;
-                m_bNeedRestart = (atoi(prev_enabled) > 0 != atoi(curr_enabled) > 0) ?
-                        true : m_bNeedRestart;
-            }
-            set(KEY_XM_MAKEUP, str);
-        }
-
-        str = params.get(KEY_XM_MAKEUP_WHITEN);
-        prev_str = get(KEY_XM_MAKEUP_WHITEN);
-        if (str != NULL) {
-            if (prev_str == NULL || strcmp(str, prev_str) != 0) {
-                set(KEY_XM_MAKEUP_WHITEN, str);
-            }
-        }
-
-        str = params.get(KEY_XM_MAKEUP_CLEAN);
-        prev_str = get(KEY_XM_MAKEUP_CLEAN);
-        if (str != NULL) {
-            if (prev_str == NULL || strcmp(str, prev_str) != 0) {
-                set(KEY_XM_MAKEUP_CLEAN, str);
-            }
-        }
-    }
-
-    return NO_ERROR;
-}
 #endif
 
 /*===========================================================================
@@ -5264,7 +5202,7 @@ int32_t QCameraParameters::updateParameters(const String8& p,
         rc = BAD_TYPE;
         goto UPDATE_PARAM_DONE;
     }
-    if ((rc = setDualCameraMode(params)))               final_rc = rc;
+
     if ((rc = setPreviewSize(params)))                  final_rc = rc;
     if ((rc = setVideoSize(params)))                    final_rc = rc;
     if ((rc = setPictureSize(params)))                  final_rc = rc;
@@ -5351,6 +5289,7 @@ int32_t QCameraParameters::updateParameters(const String8& p,
 
     if ((rc = setLongshotParam(params)))                final_rc = rc;
     if ((rc = setLedCalibration(params)))               final_rc = rc;
+    if ((rc = setDualCameraMode(params)))               final_rc = rc;
 
     setQuadraCfa(params);
     setVideoBatchSize();
@@ -5359,7 +5298,6 @@ int32_t QCameraParameters::updateParameters(const String8& p,
     if ((rc = updateFlash(false)))                      final_rc = rc;
 #ifdef TARGET_TS_MAKEUP
     if ((rc = setTsMakeup(params)))                     final_rc = rc;
-    if ((rc = setXmMakeup(params)))                     final_rc = rc;
 #endif
     if ((rc = setAdvancedCaptureMode()))                final_rc = rc;
 UPDATE_PARAM_DONE:
@@ -5809,13 +5747,11 @@ int32_t QCameraParameters::initDefaultParameters()
     set(KEY_SUPPORTED_SCENE_MODES, sceneModeValues);
     setSceneMode(SCENE_MODE_AUTO);
 
-#if 0
     // Set CDS Mode
     String8 cdsModeValues = createValuesStringFromMap(
             CDS_MODES_MAP,
             PARAM_MAP_SIZE(CDS_MODES_MAP));
     set(KEY_QC_SUPPORTED_CDS_MODES, cdsModeValues);
-#endif
 
     // Set video CDS Mode
     String8 videoCdsModeValues = createValuesStringFromMap(
@@ -6639,13 +6575,6 @@ int32_t QCameraParameters::setPreviewFpsRange(int min_fps,
     property_get("persist.vendor.debug.set.fixedfps", value, "0");
     fixedFpsValue = atoi(value);
 
-    // Don't allow function callers to request min fps same as max fps
-    // I mean SnapdragonCamera.
-    if (max_fps >= 24000 && min_fps == max_fps) {
-        LOGH("min_fps %d same as max_fps %d, setting min_fps to 7000", min_fps, max_fps);
-        min_fps = 7000;
-    }
-
     LOGD("E minFps = %d, maxFps = %d , vid minFps = %d, vid maxFps = %d",
                  min_fps, max_fps, vid_min_fps, vid_max_fps);
 
@@ -6656,8 +6585,9 @@ int32_t QCameraParameters::setPreviewFpsRange(int min_fps,
         }
     }
     snprintf(str, sizeof(str), "%d,%d", min_fps, max_fps);
-    LOGH("Setting preview fps range %s", str);
-    updateParamEntry(KEY_PREVIEW_FPS_RANGE, str);
+    LOGH("Actual preview fps range %s", str);
+    updateParamEntry(KEY_PREVIEW_FPS_RANGE, "7000,30000");
+    LOGH("Setting the preview fps range 7000,30000");
     cam_fps_range_t fps_range;
     memset(&fps_range, 0x00, sizeof(cam_fps_range_t));
     fps_range.min_fps = (float)min_fps / 1000.0f;
@@ -8128,7 +8058,7 @@ int32_t QCameraParameters::setCDSMode(const QCameraParameters& params)
         } else {
             char video_prop[PROPERTY_VALUE_MAX];
             memset(video_prop, 0, sizeof(video_prop));
-            property_get("persist.vendor.camera.video.CDS", video_prop, CDS_MODE_OFF);
+            property_get("persist.vendor.camera.video.CDS", video_prop, CDS_MODE_ON);
             int32_t cds_mode = lookupAttr(CDS_MODES_MAP, PARAM_MAP_SIZE(CDS_MODES_MAP),
                     video_prop);
             if (cds_mode != NAME_NOT_FOUND) {
@@ -8168,7 +8098,7 @@ int32_t QCameraParameters::setCDSMode(const QCameraParameters& params)
         } else {
             char prop[PROPERTY_VALUE_MAX];
             memset(prop, 0, sizeof(prop));
-            property_get("persist.vendor.camera.CDS", prop, CDS_MODE_OFF);
+            property_get("persist.vendor.camera.CDS", prop, CDS_MODE_ON);
             int32_t cds_mode = lookupAttr(CDS_MODES_MAP, PARAM_MAP_SIZE(CDS_MODES_MAP),
                     prop);
             if (cds_mode != NAME_NOT_FOUND) {
@@ -10456,9 +10386,6 @@ int32_t QCameraParameters::getStreamDimension(cam_stream_type_t streamType,
             } else {
                 getPictureSize(&dim.width, &dim.height);
             }
-        } else if (m_bDualCameraMode) {
-            dim.width = originalSnapshotDim.width;
-            dim.height = originalSnapshotDim.height;
         }
         break;
     case CAM_STREAM_TYPE_ANALYSIS:
@@ -10583,29 +10510,15 @@ char* QCameraParameters::getParameters()
 bool QCameraParameters::getTsMakeupInfo(int &whiteLevel, int &cleanLevel) const
 {
     const char* pch_makeup_enable = get(QCameraParameters::KEY_TS_MAKEUP);
-    bool enableMakeup = false;
-    if (pch_makeup_enable != NULL) {
-        enableMakeup =
-                (strcmp(pch_makeup_enable,"On") == 0);
-        if (enableMakeup) {
-            whiteLevel = getInt(QCameraParameters::KEY_TS_MAKEUP_WHITEN);
-            cleanLevel = getInt(QCameraParameters::KEY_TS_MAKEUP_CLEAN);
-        }
-    } else {
-        pch_makeup_enable = get(QCameraParameters::KEY_XM_MAKEUP);
-        if (pch_makeup_enable != NULL) {
-            const char* xm_makeup_enable = strrchr(pch_makeup_enable, ':');
-            if (xm_makeup_enable == NULL) {
-                return false;
-            }
-            xm_makeup_enable++;
-            enableMakeup = atoi(xm_makeup_enable) > 0;
-            LOGD("Xiaomi makeup enable %d", (int)enableMakeup);
-            if (enableMakeup) {
-                whiteLevel = getInt(QCameraParameters::KEY_XM_MAKEUP_WHITEN) * 10;
-                cleanLevel = getInt(QCameraParameters::KEY_XM_MAKEUP_CLEAN) * 10;
-            }
-        }
+    if (pch_makeup_enable == NULL) {
+        LOGH("pch_makeup_enable = null");
+        return false;
+    }
+    bool enableMakeup =
+            (strcmp(pch_makeup_enable,"On") == 0);
+    if (enableMakeup) {
+        whiteLevel = getInt(QCameraParameters::KEY_TS_MAKEUP_WHITEN);
+        cleanLevel = getInt(QCameraParameters::KEY_TS_MAKEUP_CLEAN);
     }
     return enableMakeup;
 }
@@ -12657,7 +12570,7 @@ bool QCameraParameters::QCameraReprocScaleParam::isScaleEnabled()
 bool QCameraParameters::QCameraReprocScaleParam::isScalePicSize(int width, int height)
 {
     //Check if the picture size is in scale table
-    if(mNeedScaleCnt <= 0 && !isBokehEnabled)
+    if(mNeedScaleCnt <= 0)
         return FALSE;
 
     for (size_t i = 0; i < mNeedScaleCnt; i++) {
@@ -12666,10 +12579,7 @@ bool QCameraParameters::QCameraReprocScaleParam::isScalePicSize(int width, int h
             return TRUE;
         }
     }
-    if (isBokehEnabled) {
-        LOGI("dualcamera mode set");
-        return TRUE;
-    }
+
     LOGE("Not in scale picture size table.");
     return FALSE;
 }
@@ -12725,18 +12635,12 @@ int32_t QCameraParameters::QCameraReprocScaleParam::setSensorSupportedPicSize()
     //will find a suitable picture size (here we leave a prossibility to add other scale requirement)
     //Currently we only focus on upscaling, and checkScaleSizeTable() has guaranteed the dimension ratio.
 
-    if((!mIsUnderScaling || mSensorSizeTblCnt <= 0) && !isBokehEnabled)
+    if(!mIsUnderScaling || mSensorSizeTblCnt <= 0)
         return BAD_VALUE;
-    if (isBokehEnabled) {
-        LOGI("dualcamera mode set");
-        //We just set the max sensor supported size here.
-        mPicSizeSetted.width = bokehSnapshotWidth;
-        mPicSizeSetted.height = bokehSnapshotHeight;
-    } else {
+
     //We just get the max sensor supported size here.
     mPicSizeSetted.width = mSensorSizeTbl[0].width;
     mPicSizeSetted.height = mSensorSizeTbl[0].height;
-    }
 
     return NO_ERROR;
 }
@@ -12761,6 +12665,7 @@ int32_t QCameraParameters::QCameraReprocScaleParam::setValidatePicSize(int &widt
         return BAD_VALUE;
 
     mIsUnderScaling = FALSE; //default: not under scale
+
     if(isScalePicSize(width, height)){
         // input picture size need scaling operation. Record size from APK and setted
         mIsUnderScaling = TRUE;
@@ -13234,7 +13139,6 @@ bool QCameraParameters::setStreamConfigure(bool isCapture,
     char value[PROPERTY_VALUE_MAX];
     bool raw_yuv = false;
     bool raw_capture = false;
-    cam_dimension_t raw_dim;
 
     if ( m_pParamBuf == NULL ) {
         return NO_INIT;
@@ -13267,11 +13171,6 @@ bool QCameraParameters::setStreamConfigure(bool isCapture,
     raw_yuv = atoi(value) > 0 ? true : false;
 
     if (isZSLMode() && getRecordingHintValue() != true) {
-        if (m_bDualCameraMode) {
-            raw_dim.width = m_pCapability->max_encoder_size.width;
-            raw_dim.height = m_pCapability->max_encoder_size.height;
-            updateRAW(raw_dim);
-        }
         stream_config_info.type[stream_config_info.num_streams] =
             CAM_STREAM_TYPE_PREVIEW;
         getStreamDimension(CAM_STREAM_TYPE_PREVIEW,
@@ -14119,10 +14018,6 @@ int32_t QCameraParameters::updatePpFeatureMask(cam_stream_type_t stream_type) {
         feature_mask |= CAM_QTI_FEATURE_PPEISCORE;
     }
 
-    if ((m_bDualCameraMode) &&
-            (stream_type == CAM_STREAM_TYPE_SNAPSHOT)){
-        feature_mask |= CAM_QTI_FEATURE_RTB;
-    }
     // Store stream feature mask
     setStreamPpMask(stream_type, feature_mask);
     LOGH("stream type: %d, pp_mask: 0x%llx", stream_type, feature_mask);
@@ -14931,7 +14826,6 @@ int32_t QCameraParameters::setDualCameraMode(const QCameraParameters& params)
     const char *str = params.get(KEY_QC_DUAL_CAMERA_MODE);
     const char *prev_str = get(KEY_QC_DUAL_CAMERA_MODE);
     int value;
-    int width, height;
 
     if (str != NULL) {
         if (prev_str == NULL || strcmp(str, prev_str) != 0) {
@@ -14940,7 +14834,6 @@ int32_t QCameraParameters::setDualCameraMode(const QCameraParameters& params)
             m_bDualCameraMode = value;
         }
     }
-    LOGI("Dual camera mode set %d",m_bDualCameraMode);
     if (m_bDualCameraMode) {
         mDualCamId  = params.getInt(KEY_QC_DUAL_CAMERA_ID);
         str = params.get(KEY_QC_DUAL_CAMERA_MAIN_CAMERA);
@@ -14950,28 +14843,8 @@ int32_t QCameraParameters::setDualCameraMode(const QCameraParameters& params)
                     str);
         m_bMainCamera = value;
         }
-        params.getPictureSize(&width, &height);
-        if ( width > m_pCapability->bokeh_snapshot_size.width ||
-                height > m_pCapability->bokeh_snapshot_size.height) {
-             LOGI("Scale enabled in Bokeh mode");
-             m_reprocScaleParam.setScaleEnable(true);
-        }
     }
     return NO_ERROR;
-}
-
-/*===========================================================================
- * FUNCTION   : getDualCameraMode
- *
- * DESCRIPTION: get dual camera mode
- *
- * PARAMETERS :
- *
- * RETURN     : Dual camera mode status
- *==========================================================================*/
-bool QCameraParameters::getDualCameraMode()
-{
-    return m_bDualCameraMode;
 }
 
 /*===========================================================================

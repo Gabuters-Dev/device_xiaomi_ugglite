@@ -107,7 +107,7 @@
 #define EXIF_IMAGE_DESCRIPTION_SIZE 100
 
 #define MAX_INFLIGHT_REQUESTS  6
-#define MAX_INFLIGHT_BLOB      6
+#define MAX_INFLIGHT_BLOB      10
 #define MIN_INFLIGHT_REQUESTS  3
 #define MIN_INFLIGHT_60FPS_REQUESTS (6)
 #define MAX_INFLIGHT_REPROCESS_REQUESTS 1
@@ -1476,9 +1476,7 @@ typedef struct {
 typedef struct {
   cam_auto_scene_t      detected_scene;
   uint8_t               max_n_scenes;
-//  xiaomi added 48 custom auto scenes or some other field with total size of 576 bytes
-  cam_asd_scene_info_t  scene_info[S_MAX+48];
-//  volatile char         xiaomi_reserved1[576];
+  cam_asd_scene_info_t  scene_info[S_MAX];
 } cam_asd_decision_t;
 
 
@@ -1957,6 +1955,8 @@ typedef enum {
 
     CAM_INTF_PARM_EZTUNE_CMD,
     CAM_INTF_PARM_INT_EVT,
+    CAM_INTF_XM_01,
+    CAM_INTF_XM_02,
 
     /* specific to HAL3 */
     /* Whether the metadata maps to a valid frame number */
@@ -2460,7 +2460,6 @@ typedef struct {
 #define CAM_QCOM_FEATURE_QUADRA_CFA     (((cam_feature_mask_t)1UL)<<33)
 #define CAM_QTI_FEATURE_PPEISCORE       (((cam_feature_mask_t)1UL)<<34)
 #define CAM_QCOM_FEATURE_METADATA_BYPASS (((cam_feature_mask_t)1UL)<<35)
-#define CAM_QTI_FEATURE_RTB              (((cam_feature_mask_t)1UL)<<36)
 #define CAM_QCOM_FEATURE_PP_SUPERSET    (CAM_QCOM_FEATURE_DENOISE2D|CAM_QCOM_FEATURE_CROP|\
                                          CAM_QCOM_FEATURE_ROTATION|CAM_QCOM_FEATURE_SHARPNESS|\
                                          CAM_QCOM_FEATURE_SCALE|CAM_QCOM_FEATURE_CAC|\
@@ -2820,7 +2819,6 @@ typedef struct {
     cam_area_t               af_roi;        /* AF roi info */
     /* Information for CPP reprocess */
     cam_dyn_img_data_t       dyn_mask;      /* Post processing dynamic feature mask */
-    int32_t                  frame_number;  /* Backend frame number*/
 } cam_reprocess_info_t;
 
 /***********************************
