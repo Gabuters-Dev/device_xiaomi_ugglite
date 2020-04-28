@@ -197,7 +197,6 @@ TARGET_USE_AOSP_SURFACEFLINGER := true
 VENDOR_SECURITY_PATCH := 2020-03-05
 
 # SELinux
-include device/qcom/sepolicy-legacy-um/sepolicy.mk
 BOARD_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy
 #BOARD_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy_base
 
