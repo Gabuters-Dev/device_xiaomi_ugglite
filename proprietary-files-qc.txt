@@ -305,9 +305,9 @@ vendor/lib/libMpeg4SwEncoder.so|971eb18b4209287f7c078c082508ebc46c11de0e
 vendor/lib/libOmxSwVdec.so|c1375674bd80792581bb297525fe932ef050424b
 vendor/lib/libOmxSwVencMpeg4.so|024bde5984f312b398d0ae172df7d8fb2db279bc
 
-# Perf - from X00RD - QKQ1.191002.002 17.07.2003.405-20200330
-vendor/bin/hw/vendor.qti.hardware.perf@2.0-service|ed731317514e1992ac919a49a1f98e14e7a60eff
-vendor/bin/msm_irqbalance|b5e55b4b0934b65b7dd5d2201f9a70f6f77a4e7c
+# Perf - from LA.UM.8.6.2.r1-06600-89xx.0
+vendor/bin/hw/vendor.qti.hardware.perf@2.0-service|3478f1a1de33d39b239f54e47b85dde6f01578c5
+vendor/bin/msm_irqbalance|0e967f5c7eaf8d863a50996459101be47adf96a2
 vendor/etc/init/vendor.qti.hardware.perf@2.0-service.rc|cc8658db5e19f8e5e575fb986e7d38147e675f8d
 vendor/etc/perf/commonresourceconfigs.xml|d9fc3b49481536d6c7a25eb13f9f1d52d3ee8ff1
 vendor/etc/perf/perf-profile0.conf|02204355bf29ceb0460cd53e6716552bb9d9b05f
@@ -340,6 +340,7 @@ vendor/lib/vendor.qti.hardware.iop@2.0.so|25cfe22f829d1b5288c574a852acc20478a91f
 vendor/lib64/hw/vendor.qti.hardware.iop@2.0-impl.so|fd2bcbc1f9c46fea6e8af477a909a35b38e8cfa0
 vendor/lib64/libqti-iopd-client.so|fc9878267908f9843882891f902c4d37fee760dd
 vendor/lib64/vendor.qti.hardware.iop@2.0.so|7fdc8d9219a6d7a335fc91edb4837bccbac9fc49
+<<<<<<< HEAD
 vendor/lib/libperfconfig.so|a940ff08c5207ca4ba7e3c9f97c51b98da8bb0d0
 vendor/lib/libperfgluelayer.so|3c58ba816cf4480357b1ed934d2b44f17d00449f
 vendor/lib/libqti-perfd-client.so|eb81a99bab35f29b7977bde878ea2a29e2abe18c
@@ -354,6 +355,8 @@ vendor/lib64/libqti-perfd.so|7a5724fcb4a5a7a74d58e2641c051934b038905d
 vendor/lib64/libqti-util.so|4911109f327c4bf9d1d34acc14082f78e69b4ccb
 vendor/lib64/vendor.qti.hardware.perf@1.0.so|125a5c14b4e768ef7ce1d89abee9b2421f17b7ba
 vendor/lib64/vendor.qti.hardware.perf@2.0.so|d4f082dcf0fedec3376144f91bc163c3c863ebd4
+=======
+>>>>>>> 1fa7190... riva: update performance blobs from LA.UM.8.6.2.r1-06600-89xx.0
 
 # Peripheral manager - from X00RD - QKQ1.191002.002 17.07.2003.405-20200330
 vendor/bin/pm-proxy|68133bb8341042b803e0f16ec77ab64734acbdb8
