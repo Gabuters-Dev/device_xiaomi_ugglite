@@ -91,11 +91,21 @@ PRODUCT_COPY_FILES += \
 # Camera
 PRODUCT_PACKAGES += \
     camera.msm8937 \
-    Snap
+    GoogleCameraGo
 
 PRODUCT_PACKAGES += \
     android.hardware.camera.provider@2.4-impl \
     android.hardware.camera.provider@2.4-service
+
+# World APN list
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/prebuilt/etc/apns-conf.xml:system/etc/apns-conf.xml
+
+# AOSP messaging, contact, dialer
+PRODUCT_PACKAGES += \
+    messaging \
+    Dialer \
+    Contacts
 
 # CNE
 PRODUCT_PACKAGES += \
