@@ -14,4 +14,4 @@
 # limitations under the License.
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/revengeos_ugglite.mk
+    $(LOCAL_DIR)/aosip_ugglite.mk
