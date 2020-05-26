@@ -22,12 +22,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-<<<<<<< HEAD:doze/src/org/lineageos/settings/doze/BootCompletedReceiver.java
-=======
 import org.lineageos.settings.dirac.DiracUtils;
 import org.lineageos.settings.doze.DozeUtils;
 
->>>>>>> a0d2387... ugglite: parts: Add DiracSound backend:parts/src/org/lineageos/settings/BootCompletedReceiver.java
 public class BootCompletedReceiver extends BroadcastReceiver {
 
     private static final boolean DEBUG = false;
@@ -35,26 +32,17 @@ public class BootCompletedReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(final Context context, Intent intent) {
-<<<<<<< HEAD:doze/src/org/lineageos/settings/doze/BootCompletedReceiver.java
         if (Utils.isDozeEnabled(context) && Utils.sensorsEnabled(context)) {
             if (DEBUG) Log.d(TAG, "Starting service");
             Utils.startService(context);
         }
-<<<<<<< HEAD:doze/src/org/lineageos/settings/doze/BootCompletedReceiver.java
-<<<<<<< HEAD:doze/src/org/lineageos/settings/doze/BootCompletedReceiver.java
-=======
         new DiracUtils(context).onBootCompleted();
->>>>>>> b5eb671... ugglite: dirac: Only call setEnabled on boot completed:parts/src/org/lineageos/settings/BootCompletedReceiver.java
-=======
         new DiracUtils(context);
->>>>>>> 845e444... ugglite: parts: Refactor Dirac setup:parts/src/org/lineageos/settings/BootCompletedReceiver.java
-=======
         if (DozeUtils.isDozeEnabled(context) && DozeUtils.sensorsEnabled(context)) {
             if (DEBUG) Log.d(TAG, "Starting Doze service");
 	    DiracUtils.initialize();
             DozeUtils.startService(context);
         }
         DiracUtils.initialize(context);
->>>>>>> 57e7749... ugglite: Dirac fixes:parts/src/org/lineageos/settings/BootCompletedReceiver.java
     }
 }

@@ -41,12 +41,7 @@
             </intent-filter>
         </receiver>
 
-<<<<<<< HEAD:doze/AndroidManifest.xml
-<<<<<<< HEAD:doze/AndroidManifest.xml
         <service android:name=".DozeService"
-=======
-=======
->>>>>>> 6907c21... ugglite: parts: Introduce Dirac preferences:parts/AndroidManifest.xml
         <activity
             android:name=".dirac.DiracActivity"
             android:label="@string/dirac_title"
@@ -56,15 +51,11 @@
             </intent-filter>
             <meta-data android:name="com.android.settings.category"
                        android:value="com.android.settings.category.ia.sound" />
-<<<<<<< HEAD:doze/AndroidManifest.xml
             <meta-data android:name="com.android.settings.summary"
                        android:resource="@string/dirac_summary" />
-=======
->>>>>>> 6907c21... ugglite: parts: Introduce Dirac preferences:parts/AndroidManifest.xml
         </activity>
 
         <service android:name=".doze.DozeService"
->>>>>>> d4ddfef... ugglite: parts: Add summary for dirac:parts/AndroidManifest.xml
                  android:permission="XiaomiDozeService">
         </service>
 

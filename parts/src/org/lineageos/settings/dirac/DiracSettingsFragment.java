@@ -1,9 +1,6 @@
 /*
-<<<<<<< HEAD
  * Copyright (C) 2019 The LineageOS Project
-=======
  * Copyright (C) 2018 The LineageOS Project
->>>>>>> 6907c21... ugglite: parts: Introduce Dirac preferences
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,22 +23,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-<<<<<<< HEAD
 import android.os.Handler;
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 6907c21... ugglite: parts: Introduce Dirac preferences
 import android.support.v14.preference.PreferenceFragment;
 import android.support.v14.preference.SwitchPreference;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceCategory;
 import android.support.v7.preference.Preference.OnPreferenceChangeListener;
-<<<<<<< HEAD
->>>>>>> eae7be4... ugglite: dirac: Prevent failures when toggling
-=======
->>>>>>> 6907c21... ugglite: parts: Introduce Dirac preferences
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -49,15 +37,12 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
-<<<<<<< HEAD
 import androidx.preference.Preference;
 import androidx.preference.Preference.OnPreferenceChangeListener;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragment;
 import androidx.preference.SwitchPreference;
 import androidx.preference.ListPreference;
-=======
->>>>>>> 6907c21... ugglite: parts: Introduce Dirac preferences
 
 import org.lineageos.settings.R;
 
@@ -73,12 +58,8 @@ public class DiracSettingsFragment extends PreferenceFragment implements
     private ListPreference mHeadsetType;
     private ListPreference mPreset;
 
-<<<<<<< HEAD
     private DiracUtils mDiracUtils;
-<<<<<<< HEAD
     private Handler mHandler = new Handler();
-=======
->>>>>>> 845e444... ugglite: parts: Refactor Dirac setup
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -89,17 +70,10 @@ public class DiracSettingsFragment extends PreferenceFragment implements
         final ActionBar actionBar = getActivity().getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
         mDiracUtils = new DiracUtils(getContext());
 
->>>>>>> 845e444... ugglite: parts: Refactor Dirac setup
         boolean enhancerEnabled = mDiracUtils.isDiracEnabled();
-=======
         boolean enhancerEnabled = DiracUtils.isDiracEnabled();
->>>>>>> 57e7749... ugglite: Dirac fixes
-=======
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.dirac_settings);
@@ -107,13 +81,10 @@ public class DiracSettingsFragment extends PreferenceFragment implements
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         boolean enhancerEnabled = DiracUtils.isDiracEnabled(getActivity());
->>>>>>> 6907c21... ugglite: parts: Introduce Dirac preferences
 
         mHeadsetType = (ListPreference) findPreference(PREF_HEADSET);
         mHeadsetType.setOnPreferenceChangeListener(this);
         mHeadsetType.setEnabled(enhancerEnabled);
-<<<<<<< HEAD
-=======
         // TODO: adapt to real values
         String[] headsetEntries = new String[] {
             getString(R.string.dirac_headset_0),
@@ -126,13 +97,10 @@ public class DiracSettingsFragment extends PreferenceFragment implements
         };
         mHeadsetType.setEntries(headsetEntries);
         mHeadsetType.setEntryValues(headsetValues);
->>>>>>> 6907c21... ugglite: parts: Introduce Dirac preferences
 
         mPreset = (ListPreference) findPreference(PREF_PRESET);
         mPreset.setOnPreferenceChangeListener(this);
         mPreset.setEnabled(enhancerEnabled);
-<<<<<<< HEAD
-=======
         // TODO: adapt to real values
         String[] presetEntries = new String[] {
             getString(R.string.dirac_preset_0),
@@ -145,7 +113,6 @@ public class DiracSettingsFragment extends PreferenceFragment implements
         };
         mPreset.setEntries(presetEntries);
         mPreset.setEntryValues(presetValues);
->>>>>>> 6907c21... ugglite: parts: Introduce Dirac preferences
     }
 
     @Override
@@ -161,15 +128,9 @@ public class DiracSettingsFragment extends PreferenceFragment implements
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-<<<<<<< HEAD
-<<<<<<< HEAD
         boolean enhancerEnabled = mDiracUtils.isDiracEnabled();
-=======
         boolean enhancerEnabled = DiracUtils.isDiracEnabled();
->>>>>>> 57e7749... ugglite: Dirac fixes
-=======
         boolean enhancerEnabled = DiracUtils.isDiracEnabled(getActivity());
->>>>>>> 6907c21... ugglite: parts: Introduce Dirac preferences
 
         mTextView = view.findViewById(R.id.switch_text);
         mTextView.setText(getString(enhancerEnabled ?
@@ -190,24 +151,18 @@ public class DiracSettingsFragment extends PreferenceFragment implements
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         switch (preference.getKey()) {
             case PREF_HEADSET:
-<<<<<<< HEAD
-<<<<<<< HEAD
                 mDiracUtils.setHeadsetType(Integer.parseInt(newValue.toString()));
                 return true;
             case PREF_PRESET:
                 mDiracUtils.setLevel(String.valueOf(newValue));
-=======
                 DiracUtils.setHeadsetType(Integer.parseInt(newValue.toString()));
                 return true;
             case PREF_PRESET:
                 DiracUtils.setLevel(String.valueOf(newValue));
->>>>>>> a0d2387... ugglite: parts: Add DiracSound backend
-=======
                 // TODO: on Headset changed
                 return true;
             case PREF_PRESET:
                 // TODO: on Preset changed
->>>>>>> 6907c21... ugglite: parts: Introduce Dirac preferences
                 return true;
             default: return false;
         }
@@ -215,32 +170,17 @@ public class DiracSettingsFragment extends PreferenceFragment implements
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
         mDiracUtils.setEnabled(isChecked);
-<<<<<<< HEAD
-=======
-=======
         DiracUtils.setEnabled(isChecked);
->>>>>>> 57e7749... ugglite: Dirac fixes
-
->>>>>>> 845e444... ugglite: parts: Refactor Dirac setup
-=======
         DiracUtils.setMusic(isChecked);
 
->>>>>>> a0d2387... ugglite: parts: Add DiracSound backend
         mTextView.setText(getString(isChecked ? R.string.switch_bar_on : R.string.switch_bar_off));
-<<<<<<< HEAD
         if (isChecked) {
-=======
         if (isChecked){
->>>>>>> eae7be4... ugglite: dirac: Prevent failures when toggling
             mSwitchBar.setEnabled(false);
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-<<<<<<< HEAD
                     try {
                         mSwitchBar.setEnabled(true);
                         setEnabled(isChecked);
@@ -253,25 +193,20 @@ public class DiracSettingsFragment extends PreferenceFragment implements
         }
     }
 
-=======
                     try{
                         mSwitchBar.setEnabled(true);
                         setEnabled(isChecked);
                     }catch(Exception ignored){
                     }
-                }
-            }, 1020);
         }else{
             setEnabled(isChecked);
         }
     }
-    
->>>>>>> eae7be4... ugglite: dirac: Prevent failures when toggling
+
     private void setEnabled(boolean enabled){
         mSwitchBar.setActivated(enabled);
         mHeadsetType.setEnabled(enabled);
         mPreset.setEnabled(enabled);
-=======
         // TODO: Toggle enhancer
 
         mTextView.setText(getString(isChecked ? R.string.switch_bar_on : R.string.switch_bar_off));
@@ -279,7 +214,6 @@ public class DiracSettingsFragment extends PreferenceFragment implements
 
         mHeadsetType.setEnabled(isChecked);
         mPreset.setEnabled(isChecked);
->>>>>>> 6907c21... ugglite: parts: Introduce Dirac preferences
     }
 
     @Override
