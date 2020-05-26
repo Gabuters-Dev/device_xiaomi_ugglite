@@ -26,11 +26,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v14.preference.PreferenceFragment;
-import android.support.v14.preference.SwitchPreference;
-import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceCategory;
-import android.support.v7.preference.Preference.OnPreferenceChangeListener;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,6 +34,13 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
+import androidx.preference.Preference;
+import androidx.preference.Preference.OnPreferenceChangeListener;
+import androidx.preference.PreferenceCategory;
+import androidx.preference.PreferenceFragment;
+import androidx.preference.SwitchPreference;
+
+import org.lineageos.settings.R;
 
 public class DozeSettingsFragment extends PreferenceFragment implements OnPreferenceChangeListener,
         CompoundButton.OnCheckedChangeListener {
@@ -48,6 +51,8 @@ public class DozeSettingsFragment extends PreferenceFragment implements OnPrefer
     private SwitchPreference mPickUpPreference;
     private SwitchPreference mHandwavePreference;
     private SwitchPreference mPocketPreference;
+
+    private Handler mHandler = new Handler();
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -61,25 +66,25 @@ public class DozeSettingsFragment extends PreferenceFragment implements OnPrefer
             showHelp();
         }
 
-        boolean dozeEnabled = Utils.isDozeEnabled(getActivity());
+        boolean dozeEnabled = DozeUtils.isDozeEnabled(getActivity());
 
-        PreferenceCategory proximitySensorCategory =
-                (PreferenceCategory) getPreferenceScreen().findPreference(Utils.CATEG_PROX_SENSOR);
+        PreferenceCategory proximitySensorCategory = (PreferenceCategory) getPreferenceScreen().
+                findPreference(DozeUtils.CATEG_PROX_SENSOR);
 
-        mPickUpPreference = (SwitchPreference) findPreference(Utils.GESTURE_PICK_UP_KEY);
+        mPickUpPreference = (SwitchPreference) findPreference(DozeUtils.GESTURE_PICK_UP_KEY);
         mPickUpPreference.setEnabled(dozeEnabled);
         mPickUpPreference.setOnPreferenceChangeListener(this);
 
-        mHandwavePreference = (SwitchPreference) findPreference(Utils.GESTURE_HAND_WAVE_KEY);
+        mHandwavePreference = (SwitchPreference) findPreference(DozeUtils.GESTURE_HAND_WAVE_KEY);
         mHandwavePreference.setEnabled(dozeEnabled);
         mHandwavePreference.setOnPreferenceChangeListener(this);
 
-        mPocketPreference = (SwitchPreference) findPreference(Utils.GESTURE_POCKET_KEY);
+        mPocketPreference = (SwitchPreference) findPreference(DozeUtils.GESTURE_POCKET_KEY);
         mPocketPreference.setEnabled(dozeEnabled);
         mPocketPreference.setOnPreferenceChangeListener(this);
 
         // Hide proximity sensor related features if the device doesn't support them
-        if (!Utils.getProxCheckBeforePulse(getActivity())) {
+        if (!DozeUtils.getProxCheckBeforePulse(getActivity())) {
             getPreferenceScreen().removePreference(proximitySensorCategory);
         }
     }
@@ -87,7 +92,8 @@ public class DozeSettingsFragment extends PreferenceFragment implements OnPrefer
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View view = LayoutInflater.from(getContext()).inflate(R.layout.doze, container, false);
+        final View view = LayoutInflater.from(getContext()).inflate(R.layout.doze,
+                container, false);
         ((ViewGroup) view).addView(super.onCreateView(inflater, container, savedInstanceState));
         return view;
     }
@@ -96,7 +102,7 @@ public class DozeSettingsFragment extends PreferenceFragment implements OnPrefer
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        boolean dozeEnabled = Utils.isDozeEnabled(getActivity());
+        boolean dozeEnabled = DozeUtils.isDozeEnabled(getActivity());
 
         mTextView = view.findViewById(R.id.switch_text);
         mTextView.setText(getString(dozeEnabled ?
@@ -115,15 +121,14 @@ public class DozeSettingsFragment extends PreferenceFragment implements OnPrefer
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
-        Utils.enableGesture(getActivity(), preference.getKey(), (Boolean) newValue);
-        Utils.checkDozeService(getActivity());
+        mHandler.post(() -> DozeUtils.checkDozeService(getActivity()));
         return true;
     }
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-        Utils.enableDoze(getActivity(), isChecked);
-        Utils.checkDozeService(getActivity());
+        DozeUtils.enableDoze(getActivity(), isChecked);
+        DozeUtils.checkDozeService(getActivity());
 
         mTextView.setText(getString(isChecked ? R.string.switch_bar_on : R.string.switch_bar_off));
         mSwitchBar.setActivated(isChecked);

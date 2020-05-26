@@ -1,6 +1,5 @@
 /*
  * Copyright (C) 2019 The LineageOS Project
- * Copyright (C) 2018 The LineageOS Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,21 +39,6 @@ public final class DiracUtils {
     public static DiracUtils getInstance() {
         if (mInstance == null) {
             throw new IllegalArgumentException("Trying to get instance without initializing!");
-    protected static DiracSound mDiracSound;
-    private static boolean mInitialized;
-    private static MediaSessionManager mMediaSessionManager;
-    private static Handler mHandler = new Handler();
-    private static Context mContext;
-
-    public static void initialize(Context context) {
-        if (!mInitialized) {
-            mContext = context;
-            mMediaSessionManager = (MediaSessionManager) context.getSystemService(Context.MEDIA_SESSION_SERVICE);
-            mInitialized = true;
-            mDiracSound = new DiracSound(0, 0);
-            setEnabled(mDiracSound.getMusic() == 1);
-            mDiracSound.setHeadsetType(mDiracSound.getHeadsetType());
-            setLevel(getLevel());
         }
         return mInstance;
     }
@@ -66,24 +50,13 @@ public final class DiracUtils {
     }
 
     public void onBootCompleted() {
-    public void onBootCompleted(){
         setEnabled(mDiracSound.getMusic() == 1);
         mDiracSound.setHeadsetType(mDiracSound.getHeadsetType());
         setLevel(getLevel());
         mInstance = this;
     }
 
-    public DiracUtils(final Context context) {
-        mContext = context;
-        mMediaSessionManager = (MediaSessionManager) context.getSystemService(Context.MEDIA_SESSION_SERVICE);
-        mDiracSound = new DiracSound(0, 0);
-        setEnabled(mDiracSound.getMusic() == 1);
-        mDiracSound.setHeadsetType(mDiracSound.getHeadsetType());
-        setLevel(getLevel());
-    }
-
     protected void refreshPlaybackIfNecessary(){
-    protected static void refreshPlaybackIfNecessary(){
         if (mMediaSessionManager == null) {
             mMediaSessionManager = (MediaSessionManager) mContext.getSystemService(Context.MEDIA_SESSION_SERVICE);
         }
@@ -100,7 +73,6 @@ public final class DiracUtils {
     }
 
     private void triggerPlayPause(MediaController controller) {
-    private static void triggerPlayPause(MediaController controller) {
         long when = SystemClock.uptimeMillis();
         final KeyEvent evDownPause = new KeyEvent(when, when, KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MEDIA_PAUSE, 0);
         final KeyEvent evUpPause = KeyEvent.changeAction(evDownPause, KeyEvent.ACTION_UP);
@@ -124,7 +96,6 @@ public final class DiracUtils {
                 controller.dispatchMediaButtonEvent(evDownPlay);
             }
         }, 1000);
-        }, 500);
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -134,10 +105,6 @@ public final class DiracUtils {
     }
 
     private int getMediaControllerPlaybackState(MediaController controller) {
-        }, 520);
-    }
-
-    private static int getMediaControllerPlaybackState(MediaController controller) {
         if (controller != null) {
             final PlaybackState playbackState = controller.getPlaybackState();
             if (playbackState != null) {
@@ -150,46 +117,15 @@ public final class DiracUtils {
         mDiracSound.setEnabled(enable);
         mDiracSound.setMusic(enable ? 1 : 0);
         if (enable) {
-    protected static void setEnabled(boolean enable) {
-        mDiracSound.setEnabled(enable);
-        mDiracSound.setMusic(enable ? 1 : 0);
-        if (enable){
             refreshPlaybackIfNecessary();
         }
     }
 
     protected boolean isDiracEnabled() {
-    protected static boolean isDiracEnabled() {
         return mDiracSound.getMusic() == 1;
     }
 
     protected void setLevel(String preset) {
-import android.os.UserHandle;
-
-public final class DiracUtils {
-
-    protected static DiracSound mDiracSound;
-    private static boolean mInitialized;
-
-    public static void initialize() {
-        if (!mInitialized) {
-            mInitialized = true;
-            mDiracSound = new DiracSound(0, 0);
-            mDiracSound.setMusic(mDiracSound.getMusic());
-            mDiracSound.setHeadsetType(mDiracSound.getHeadsetType());
-            setLevel(getLevel());
-        }
-    }
-
-    protected static void setMusic(boolean enable) {
-        mDiracSound.setMusic(enable ? 1 : 0);
-    }
-
-    protected static boolean isDiracEnabled(Context context) {
-        return mDiracSound.getMusic() == 1;
-    }
-
-    protected static void setLevel(String preset) {
         String[] level = preset.split("\\s*,\\s*");
 
         for (int band = 0; band <= level.length - 1; band++) {
@@ -198,7 +134,6 @@ public final class DiracUtils {
     }
 
     protected String getLevel() {
-    protected static String getLevel() {
         String selected = "";
         for (int band = 0; band <= 6; band++) {
             int temp = (int) mDiracSound.getLevel(band);
@@ -209,12 +144,6 @@ public final class DiracUtils {
     }
 
     protected void setHeadsetType(int paramInt) {
-    protected static void setHeadsetType(int paramInt) {
          mDiracSound.setHeadsetType(paramInt);
-
-public final class DiracUtils {
-
-    protected static boolean isDiracEnabled(Context context) {
-        return false;
     }
 }
