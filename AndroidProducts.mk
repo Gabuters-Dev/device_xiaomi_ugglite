@@ -14,4 +14,4 @@
 # limitations under the License.
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/aosip_ugglite.mk
+    $(LOCAL_DIR)/lineage_ugglite.mk

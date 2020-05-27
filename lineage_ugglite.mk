@@ -20,13 +20,8 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/product_launched_with_n.mk)
 
-<<<<<<< HEAD:lineage_ugglite.mk
 # Inherit some common Lineage stuff
 $(call inherit-product, vendor/lineage/config/common_full_phone.mk)
-=======
-# Inherit some common Syberia stuff
-$(call inherit-product, vendor/syberia/config/common_full_phone.mk)
->>>>>>> a264720... ugglite: Add prebuilt APN list:syberia_ugglite.mk
 
 # Inherit from ugglite device
 $(call inherit-product, device/xiaomi/ugglite/device.mk)
@@ -43,7 +38,9 @@ PRODUCT_GMS_CLIENTID_BASE := android-xiaomi
 PRODUCT_BUILD_PROP_OVERRIDES += \
     TARGET_DEVICE="ugglite" \
     PRODUCT_NAME="ugglite" \
-    PRIVATE_BUILD_DESC="ugglite-user 7.1.2 N2G47H V9.1.2.0.NDFMIEI release-keys"
+
+PRIVATE_BUILD_DESC="ugglite-user 7.1.2 N2G47H V9.1.2.0.NDFMIEI release-keys"
 
 # Set BUILD_FINGERPRINT variable
-BUILD_FINGERPRINT := "Xiaomi/ugglite/ugglite:7.1.2/N2G47H/V9.1.2.0.NDFMIEI:user/release-keys"
+#BUILD_FINGERPRINT := "Xiaomi/ugglite/ugglite:7.1.2/N2G47H/V9.1.2.0.NDFMIEI:user/release-keys"
+‌‌‎BUILD_FINGERPRINT := "xiaomi/tissot/tissot_sprout:8.0.0/OPR1.170623.026/8.1.10:user/release-keys"

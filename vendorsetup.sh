@@ -1,1 +1,1 @@
-add_lunch_combo aosip_ugglite-userdebug
+add_lunch_combo lineage_ugglite-userdebug
