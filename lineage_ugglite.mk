@@ -20,13 +20,8 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/product_launched_with_m.mk)
 
-<<<<<<< HEAD:lineage_ugglite.mk
 # Inherit some common Lineage stuff
-$(call inherit-product, vendor/lineage/config/common_full_phone.mk)
-=======
-# Inherit some common Syberia stuff
-$(call inherit-product, vendor/syberia/config/common_full_phone.mk)
->>>>>>> a264720... ugglite: Add prebuilt APN list:syberia_ugglite.mk
+$(call inherit-product, vendor/lineage/config/common_full_phone.mk
 
 # Inherit from riva device
 $(call inherit-product, $(LOCAL_PATH)/device.mk)
