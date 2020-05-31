@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 allow system_server vendor_keylayout_file:dir r_dir_perms;
 allow system_server vendor_keylayout_file:file r_file_perms;
-=======
->>>>>>> f01d9a3... ugglite: use full sepolicy instead of the minimal one
 allow system_server lirc_device:chr_file rw_file_perms;
 allow system_server spidev_device:chr_file rw_file_perms;
 allow system_server sysfs_rtc:file r_file_perms;
