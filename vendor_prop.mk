@@ -81,7 +81,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Display
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.opengles.version=196608 \
-    ro.vendor.display.cabl=2 
+    ro.vendor.display.cabl=2
 
 # Fm
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -205,3 +205,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Zygote preforking
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.device_config.runtime_native.usap_pool_enabled=true
+
+# Spectrum
+PRODUCT_PROPERTY_OVERRIDES += \
+    spectrum.support=1 \
+    persist.spectrum.kernel=Gabuters
