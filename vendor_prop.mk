@@ -190,3 +190,8 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.device_config.runtime_native.usap_pool_enabled=true
 
+# Spectrum
+PRODUCT_PROPERTY_OVERRIDES += \
+    spectrum.support=1 \
+    persist.spectrum.kernel=Gabuters
+ 
