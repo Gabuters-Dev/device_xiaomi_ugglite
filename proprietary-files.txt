@@ -1765,6 +1765,8 @@ etc/camera/s5k5e8_oef0501_ofilm_d6_chromatix.xml:vendor/etc/camera/s5k5e8_oef050
 etc/camera/s5k5e8_oef0501_ofilm_d6_chromatix_india.xml:vendor/etc/camera/s5k5e8_oef0501_ofilm_d6_chromatix_india.xml
 
 # ESE-Powermanager - from LA.UM.8.6.r1-04400-89xx.0
+product/lib/vendor.qti.esepowermanager@1.0.so|bff5c9cd9e6c0984bf65b7437ab70c4d095d87a5
+product/lib64/vendor.qti.esepowermanager@1.0.so|08914f5a066d117c50adaef03c62c7382b4aeaaf
 vendor/bin/hw/vendor.qti.esepowermanager@1.0-service|1dc4d45b23a15177a90105b74c46a7540fcc14c9
 vendor/etc/init/vendor.qti.esepowermanager@1.0-service.rc|58a3866ad5a7613d9392c9adb671eaa7825578a2
 vendor/lib/hw/vendor.qti.esepowermanager@1.0-impl.so|dcc6a11f408ba83994af21e44d2c8b0b8d83d929
