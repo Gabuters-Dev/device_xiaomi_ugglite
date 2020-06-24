@@ -210,8 +210,8 @@ vendor/firmware/a330_pfp.fw|3e2fcee7276ded819cf2d95864fdd6788a484ee1
 vendor/firmware/a330_pm4.fw|ae739ea812f9e4462d7bba8b9ead5782d4496618
 
 # Graphics (HDR) - from LA.UM.8.6.r1-04400-89xx.0
-vendor/lib/libhdr_tm.so|4c371d0931245a65d0b4df768de8837bbdf4832e
-vendor/lib64/libhdr_tm.so|c388a9b14966583cde2c682c129fcf5cfa298239
+vendor/lib/libhdr_tm.so|7627802801cf9f5acf938f10943c32d2755cf68d
+vendor/lib64/libhdr_tm.so|70c80f029af379c525acc9ac61719777f303f6b6
 
 # Graphics (SDM) - from X00RD - QKQ1.191002.002 17.07.2003.405-20200330
 vendor/lib/libscalar.so|7ac579768ffd2caee903d69d8fd3f7918b04ffbe
