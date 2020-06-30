@@ -134,18 +134,16 @@ PRODUCT_PROPERTY_OVERRIDES += \
     vendor.vidc.enc.disable.pq=true \
     vendor.vidc.enc.narrow.searchrange=1
 
-<<<<<<< HEAD
 #Memory optimization
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.vendor.qti.sys.fw.bservice_enable=true \
     ro.vendor.qti.am.reschedule_service=true
-=======
+
 # ParanoidDoze
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.sensor.proximity=true \
     ro.sensor.pocket=xiaomi.sensor.pocket \
     ro.sensor.pickup=xiaomi.sensor.pickup
->>>>>>> c99c5f0... rolex: Build ParanoidDoze
 
 # Perf
 PRODUCT_PROPERTY_OVERRIDES += \
