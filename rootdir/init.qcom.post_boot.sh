@@ -344,26 +344,8 @@ function configure_zram_parameters() {
     # And enable lz4 zram compression for Go targets.
 
     RamSizeGB=`echo "($MemTotal / 1048576 ) + 1" | bc`
-<<<<<<< HEAD
-<<<<<<< HEAD
     zRamSizeBytes=`echo "$RamSizeGB * 1024 * 1024 * 1024 / 2" | bc`
     if [ $zRamSizeBytes -gt 4294967296 ]; then
-=======
-    if [ $RamSizeGB -le 2 ]; then
-        zRamSizeBytes=`echo "$RamSizeGB * 1024 * 1024 * 1024 * 3 / 4" | bc`
-        zRamSizeMB=`echo "$RamSizeGB * 1024 * 3 / 4" | bc`
-    else
-        zRamSizeBytes=`echo "$RamSizeGB * 1024 * 1024 * 1024 / 2" | bc`
-        zRamSizeMB=`echo "$RamSizeGB * 1024 / 2" | bc`
-    fi
-
-=======
-    zRamSizeBytes=`echo "$RamSizeGB * 1024 * 1024 * 1024 / 2" | bc`
-    zRamSizeMB=`echo "$RamSizeGB * 1024 / 2" | bc`
->>>>>>> parent of c706c67... rolex: post_boot: updating post_boot for <=2 GB devices
-    # use MB avoid 32 bit overflow
-    if [ $zRamSizeMB -gt 4096 ]; then
->>>>>>> c706c67... rolex: post_boot: updating post_boot for <=2 GB devices
         zRamSizeBytes=4294967296
     fi
 
