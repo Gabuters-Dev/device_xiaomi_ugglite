@@ -340,11 +340,11 @@ function configure_zram_parameters() {
     # Zram disk - 75% for Go devices.
     # For 512MB Go device, size = 384MB, set same for Non-Go.
     # For 1GB Go device, size = 768MB, set same for Non-Go.
-    # For 2GB Go device, size = 1536MB, set same for Non-Go.
-    # For >2GB Non-Go devices, size = 50% of RAM size. Limit the size to 4GB.
+    # For >=2GB Non-Go devices, size = 50% of RAM size. Limit the size to 4GB.
     # And enable lz4 zram compression for Go targets.
 
     RamSizeGB=`echo "($MemTotal / 1048576 ) + 1" | bc`
+<<<<<<< HEAD
 <<<<<<< HEAD
     zRamSizeBytes=`echo "$RamSizeGB * 1024 * 1024 * 1024 / 2" | bc`
     if [ $zRamSizeBytes -gt 4294967296 ]; then
@@ -357,6 +357,10 @@ function configure_zram_parameters() {
         zRamSizeMB=`echo "$RamSizeGB * 1024 / 2" | bc`
     fi
 
+=======
+    zRamSizeBytes=`echo "$RamSizeGB * 1024 * 1024 * 1024 / 2" | bc`
+    zRamSizeMB=`echo "$RamSizeGB * 1024 / 2" | bc`
+>>>>>>> parent of c706c67... rolex: post_boot: updating post_boot for <=2 GB devices
     # use MB avoid 32 bit overflow
     if [ $zRamSizeMB -gt 4096 ]; then
 >>>>>>> c706c67... rolex: post_boot: updating post_boot for <=2 GB devices
@@ -371,7 +375,13 @@ function configure_zram_parameters() {
         if [ -f /sys/block/zram0/use_dedup ]; then
             echo 1 > /sys/block/zram0/use_dedup
         fi
-        echo $zRamSizeBytes > /sys/block/zram0/disksize
+        if [ $MemTotal -le 524288 ]; then
+            echo 402653184 > /sys/block/zram0/disksize
+        elif [ $MemTotal -le 1048576 ]; then
+            echo 805306368 > /sys/block/zram0/disksize
+        else
+            echo $zRamSizeBytes > /sys/block/zram0/disksize
+        fi
 
         # ZRAM may use more memory than it saves if SLAB_STORE_USER
         # debug option is enabled.
@@ -468,9 +478,11 @@ if [ "$ProductName" == "msmnile" ] || [ "$ProductName" == "kona" ] ; then
       configure_read_ahead_kb_values
 else
     arch_type=`uname -m`
+    MemTotalStr=`cat /proc/meminfo | grep MemTotal`
+    MemTotal=${MemTotalStr:16:8}
 
     # Set parameters for 32-bit Go targets.
-    if [ "$low_ram" == "true" ]; then
+    if [ $MemTotal -le 1048576 ] && [ "$low_ram" == "true" ]; then
         # Disable KLMK, ALMK, PPR & Core Control for Go devices
         echo 0 > /sys/module/lowmemorykiller/parameters/enable_lmk
         echo 0 > /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk
