@@ -20,15 +20,10 @@ DEVICE_PATH := device/xiaomi/ugglite
 # Overlay
 DEVICE_PACKAGE_OVERLAYS += \
     $(DEVICE_PATH)/overlay \
-<<<<<<< HEAD
-    $(DEVICE_PATH)/overlay-lineage \
-    $(DEVICE_PATH)/overlay-mgs \
-=======
     $(DEVICE_PATH)/overlay-pa
 
 PRODUCT_ENFORCE_RRO_TARGETS := \
     framework-res
->>>>>>> 171c522... rolex: Add pa specific overlay
 
 # Properties
 -include $(DEVICE_PATH)/vendor_prop.mk
