@@ -20,6 +20,10 @@ else
 LOCAL_CFLAGS += -DDAEMON_PRESENT
 endif
 
+# OMX
+LOCAL_C_INCLUDES := \
+    $((LOCAL_PATH)/../../../../../../../hardware/qcom/media/msm8996/mm-core/inc/OMX_QCOMExtns.h \
+
 # System header file path prefix
 LOCAL_CFLAGS += -DSYSTEM_HEADER_PREFIX=sys
 
