@@ -14,7 +14,9 @@
 # limitations under the License.
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/lineage_ugglite.mk
+    $(LOCAL_DIR)/havoc_ugglite.mk
 
 COMMON_LUNCH_CHOICES := \
-     lineage_ugglite-userdebug
+     havoc_ugglite-userdebug \
+     havoc_ugglite-user \
+     havoc_ugglite-eng
