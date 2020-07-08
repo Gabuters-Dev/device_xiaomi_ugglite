@@ -41,10 +41,10 @@ TARGET_VENDOR_PRODUCT_NAME := ugglite
 PRODUCT_BUILD_PROP_OVERRIDES += \
     TARGET_DEVICE="ugglite" \
     PRODUCT_NAME="ugglite" \
-    PRIVATE_BUILD_DESC="coral-user 10 QQ3A.200605.001 6392402 release-keys"
-
-BUILD_FINGERPRINT := "google/coral/coral:10/QQ3A.200605.001/6392402:user/release-keys"
+    PRIVATE_BUILD_DESC="coral-user 10 QQ3A.200705.005 6506677 release-keys"
 
 # Maintainer
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.superior.maintainer=Akbar
+
+BUILD_FINGERPRINT := "google/coral/coral:10/QQ3A.200705.002/6506677:user/release-keys"
