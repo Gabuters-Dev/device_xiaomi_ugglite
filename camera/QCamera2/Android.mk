@@ -120,7 +120,7 @@ endif
 #LOCAL_STATIC_LIBRARIES := libqcamera2_util
 LOCAL_C_INCLUDES += \
         $(TARGET_OUT_HEADERS)/qcom/display
-hardware/qcom/display-caf/msm8996/libqservice \
+	hardware/qcom/display-caf/msm8996/libqservice \
         hardware/qcom/display/msm8996/libqdutils \
         hardware/qcom/display/msm8996/gralloc \
         hardware/qcom/display/msm8996/include
