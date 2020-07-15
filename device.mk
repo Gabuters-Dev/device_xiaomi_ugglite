@@ -301,11 +301,15 @@ PRODUCT_COPY_FILES += \
 
 # ParanoidDoze
 PRODUCT_PACKAGES += \
+<<<<<<< HEAD
     ParanoidDoze
 
 # Power
 PRODUCT_PACKAGES += \
     android.hardware.power@1.2-service
+=======
+    android.hardware.power@1.2-service-qti.ugglite
+>>>>>>> 6d31f8a... ugglite: Update power HAL to 1.2 from LineageOS
 
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/configs/powerhint.xml:$(TARGET_COPY_OUT_VENDOR)/etc/powerhint.xml
