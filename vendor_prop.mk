@@ -187,7 +187,7 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 
 # Maintainer
 PRODUCT_PROPERTY_OVERRIDES += \
-    ro.maintainer.name=garisku05
+    ro.maintainer.name=Mgs-Alone
 
 # cpu
 PRODUCT_PROPERTY_OVERRIDES += \
