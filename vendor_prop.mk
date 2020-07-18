@@ -185,3 +185,8 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     ro.surface_flinger.set_display_power_timer_ms=10000 \
     ro.surface_flinger.set_touch_timer_ms=5000 \
     ro.surface_flinger.set_idle_timer_ms=9000
+
+# Zygote preforking
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.device_config.runtime_native.usap_pool_enabled=true
+
