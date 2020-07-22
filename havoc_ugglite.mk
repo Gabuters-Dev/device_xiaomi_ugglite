@@ -31,7 +31,8 @@ TARGET_BOOT_ANIMATION_RES := 720
 PRODUCT_BRAND := Xiaomi
 PRODUCT_DEVICE := ugglite
 PRODUCT_MANUFACTURER := Xiaomi
-PRODUCT_MODEL := Redmi Note 5A/Y1 Lite
+<<<<<<< HEAD:havoc_ugglite.mk
+PRODUCT_MODEL := Redmi Note 5A
 PRODUCT_NAME := havoc_ugglite
 
 PRODUCT_GMS_CLIENTID_BASE := android-xiaomi
