@@ -1,1 +1,6 @@
 allow kernel debugfs_wlan:dir search;
+allow kernel mnt_user_file:dir { search };
+allow kernel mnt_user_file:lnk_file { read };
+allow kernel sdcardfs:dir { search };
+allow kernel storage_file:dir { search };
+allow kernel storage_file:lnk_file { read };

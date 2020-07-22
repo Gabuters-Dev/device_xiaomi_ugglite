@@ -1,0 +1,1 @@
+allow dex2oat vendor_file:file { getattr  read };
