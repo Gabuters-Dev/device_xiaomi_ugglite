@@ -123,8 +123,8 @@ DEVICE_MANIFEST_FILE := $(DEVICE_PATH)/manifest.xml
 DEVICE_MATRIX_FILE := $(DEVICE_PATH)/compatibility_matrix.xml
 
 # Init
-TARGET_INIT_VENDOR_LIB := libinit_ugglite
-TARGET_RECOVERY_DEVICE_MODULES := libinit_ugglite
+TARGET_INIT_VENDOR_LIB := //$(DEVICE_PATH):libinit_ugglite
+TARGET_RECOVERY_DEVICE_MODULES := //$(DEVICE_PATH):libinit_ugglite
 TARGET_PLATFORM_DEVICE_BASE := /devices/soc/
 
 # Kernel
