@@ -16,6 +16,7 @@
 
 cc_library_static {
     name: "libinit_ugglite",
+    recovery_available: true,
     srcs: ["init_ugglite.cpp"],
     include_dirs: [
         "system/core/base/include",
