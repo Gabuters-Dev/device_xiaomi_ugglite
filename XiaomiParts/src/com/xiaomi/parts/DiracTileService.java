@@ -5,14 +5,14 @@ import android.service.quicksettings.TileService;
  
 public class DiracTileService extends TileService {
  
-    private DiracUtils mDiracUtils;
+    private DiracOnBoot mDiracOnBoot;
  
     @Override
     public void onStartListening() {
  
-        mDiracUtils = new DiracUtils(getApplicationContext());
+        mDiracOnBoot = new DiracOnBoot(getApplicationContext());
  
-        boolean enhancerEnabled = mDiracUtils.isDiracEnabled();
+        boolean enhancerEnabled = mDiracOnBoot.isDiracEnabled();
  
         Tile tile = getQsTile();
         if (enhancerEnabled) {
@@ -29,11 +29,11 @@ public class DiracTileService extends TileService {
     @Override
     public void onClick() {
         Tile tile = getQsTile();
-        if (mDiracUtils.isDiracEnabled()) {
-            mDiracUtils.setEnabled(false);
+        if (mDiracOnBoot.isDiracEnabled()) {
+            mDiracOnBoot.setEnabled(false);
             tile.setState(Tile.STATE_INACTIVE);
         } else {
-            mDiracUtils.setEnabled(true);
+            mDiracOnBoot.setEnabled(true);
             tile.setState(Tile.STATE_ACTIVE);
         }
         tile.updateTile();
