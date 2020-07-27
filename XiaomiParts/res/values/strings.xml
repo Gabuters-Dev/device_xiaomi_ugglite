@@ -216,4 +216,7 @@
 
     <!-- Label for feature switch -->
     <string name="switch_bar_off">Off</string>
+
+     <!-- Dirac tiles -->
+    <string name="dirac_qs_tile_title">Dirac sound</string>
 </resources>
