@@ -144,6 +144,9 @@ TARGET_KERNEL_CONFIG := ugglite_defconfig
 TARGET_KERNEL_SOURCE := kernel/xiaomi/msm8917
 TARGET_COMPILE_WITH_MSM_KERNEL	:= true
 
+# HWUI
+HWUI_COMPILE_FOR_PERF := true
+
 # Lights
 TARGET_PROVIDES_LIBLIGHT := true
 
