@@ -20,8 +20,9 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/product_launched_with_m.mk)
 
-# Inherit some common NusantaraOS stuff
+# Inherit some common Nusantara stuff
 $(call inherit-product, vendor/nusantara/config/common_full_phone.mk)
+$(call inherit-product-if-exists, packages/apps/NusantaraParts/nadproject.mk)
 
 # Inherit from ugglite device
 $(call inherit-product, $(LOCAL_PATH)/device.mk)
