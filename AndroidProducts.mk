@@ -14,7 +14,9 @@
 # limitations under the License.
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/lineage_ugglite.mk
+    $(LOCAL_DIR)/nad_ugglite.mk
 
 COMMON_LUNCH_CHOICES := \
-     lineage_ugglite-userdebug
+     nad_ugglite-userdebug \
+     nad_ugglite-user \
+     nad_ugglite-eng
