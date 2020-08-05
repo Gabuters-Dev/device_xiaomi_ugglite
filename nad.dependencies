@@ -1,0 +1,20 @@
+[
+  {
+    "remote": "github",
+    "repository": "Gabuters-Dev/vendor_xiaomi_ugglite",
+    "target_path": "vendor/xiaomi",
+    "branch": "lineage-17.1-rebase"
+  },
+  {
+    "remote": "github",
+    "repository": "kdrag0n/proton-clang",
+    "target_path": "prebuilts/clang/host/linux-x86/clang-proton",
+    "branch": "master"
+  },
+  {
+    "remote": "github",
+    "repository": "Gabuters-Dev/kernel_xiaomi_msm8917",
+    "target_path": "kernel/xiaomi/msm8917",
+    "branch": "gabut-ten"
+  }
+]

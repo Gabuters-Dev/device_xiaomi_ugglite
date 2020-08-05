@@ -31,7 +31,7 @@ if [[ ! -d "${MY_DIR}" ]]; then MY_DIR="${PWD}"; fi
 
 NAD_ROOT="${MY_DIR}/../../.."
 
-HELPER="$NAD_ROOT"/vendor/lineage/build/tools/extract_utils.sh
+HELPER="$NAD_ROOT"/vendor/nad/build/tools/extract_utils.sh
 if [ ! -f "$HELPER" ]; then
     echo "Unable to find helper script at $HELPER"
     exit 1
