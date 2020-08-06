@@ -17,21 +17,13 @@
 /vendor/bin/hw/android\.hardware\.drm@1\.2-service\.widevine u:object_r:hal_drm_widevine_exec:s0
 
 # Input
-/sys/board_properties/virtualkeys.*             u:object_r:touch_sysfs:s0
 /vendor/usr/keylayout(/.*)?                     u:object_r:vendor_keylayout_file:s0
 
 # Ir
 /dev/lirc[0-9]*					u:object_r:lirc_device:s0
 
-# Rild
-/(vendor|system/vendor)/radio/qcril_database/qcril.db	u:object_r:rild_file:s0
-
 # RTC
 /sys/devices/soc/qpnp-rtc-8/rtc/rtc0/hctosys            u:object_r:sysfs_rtc:s0
-
-# Touch
-/sys/devices/soc/78b7000.i2c/i2c-3/3-[0-9a-f]+/disable_keys   u:object_r:touch_sysfs:s0
-/(vendor|system/vendor)/bin/hw/vendor\.lineage\.touch@1\.0-service\.ugglite u:object_r:hal_lineage_touch_default_exec:s0
 
 # Light
 /sys/devices/soc/78b6000\.i2c/i2c-2/2-[0-9a-f]+/leds(/.*)?    u:object_r:sysfs_leds:s0
