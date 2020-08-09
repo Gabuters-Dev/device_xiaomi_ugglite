@@ -22,6 +22,9 @@
 # Ir
 /dev/lirc[0-9]*					u:object_r:lirc_device:s0
 
+# Rild
+/(vendor|system/vendor)/radio/qcril_database/qcril.db	u:object_r:rild_file:s0
+
 # RTC
 /sys/devices/soc/qpnp-rtc-8/rtc/rtc0/hctosys            u:object_r:sysfs_rtc:s0
 
@@ -32,5 +35,5 @@
 /dev/spidev6.1                                  u:object_r:spidev_device:s0
 /dev/spidev7.1                                  u:object_r:spidev_device:s0
 
-# Legacy root dirs
-/firmware(/.*)?            u:object_r:firmware_file:s0
+# Root filesystem
+/firmware(/.*)?                                 u:object_r:firmware_file:s0
