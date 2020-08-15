@@ -5,7 +5,7 @@
             "Name":"tsens_tz_sensor5",
             "Type":"CPU",
             "HotThreshold":[
-                "NAN",
+                65.0,
                 "NAN",
                 "NAN",
                 95.0,
@@ -15,12 +15,13 @@
             ],
             "VrThreshold":"NAN",
             "Multiplier":0.1
+	    "Monitor":false
         },
         {
             "Name":"tsens_tz_sensor6",
             "Type":"CPU",
             "HotThreshold":[
-                "NAN",
+                65.0,
                 "NAN",
                 "NAN",
                 95.0,
@@ -30,12 +31,13 @@
             ],
             "VrThreshold":"NAN",
             "Multiplier":0.1
+	    "Monitor":false
         },
         {
             "Name":"tsens_tz_sensor7",
             "Type":"CPU",
             "HotThreshold":[
-                "NAN",
+                65.0,
                 "NAN",
                 "NAN",
                 95.0,
@@ -45,12 +47,13 @@
             ],
             "VrThreshold":"NAN",
             "Multiplier":0.1
+	    "Monitor":false
         },
         {
             "Name":"tsens_tz_sensor8",
             "Type":"CPU",
             "HotThreshold":[
-                "NAN",
+                65.0,
                 "NAN",
                 "NAN",
                 95.0,
@@ -60,12 +63,13 @@
             ],
             "VrThreshold":"NAN",
             "Multiplier":0.1
+	    "Monitor":false
         },
         {
             "Name":"tsens_tz_sensor10",
             "Type":"GPU",
             "HotThreshold":[
-                "NAN",
+                65.0,
                 "NAN",
                 "NAN",
                 95.0,
@@ -75,6 +79,7 @@
             ],
             "VrThreshold":"NAN",
             "Multiplier":0.1
+	    "Monitor":false
         },
         {
             "Name":"battery",
@@ -82,14 +87,15 @@
             "HotThreshold":[
                 "NAN",
                 "NAN",
+                45.0,
                 "NAN",
-                "NAN",
-                "NAN",
+                50.0,
                 "NAN",
                 60.0
             ],
             "VrThreshold":"NAN",
             "Multiplier":0.001
+	    "Monitor":false
         },
         {
             "Name":"xo_therm_buf",
@@ -105,16 +111,38 @@
             ],
             "HotHysteresis":[
                 0.0,
-                3.0,
-                1.0,
-                2.0,
-                1.0,
-                1.0,
-                1.0
+                0.0,
+                1.9,
+                1.9,
+                1.9,
+                1.9,
+                1.9
             ],
-            "VrThreshold":58.0,
-            "Multiplier":1.0,
+            "VrThreshold":75.0,
+            "Multiplier":0.001,
             "Monitor":true
+	    }
+        ],
+    "CoolingDevices":[
+        {
+            "Name":"tsens_tz_sensor5",
+            "Type":"CPU"
+        },
+        {
+            "Name":"tsens_tz_sensor6",
+            "Type":"CPU"
+        },
+        {
+            "Name":"tsens_tz_sensor7",
+            "Type":"CPU"
+        },
+        {
+            "Name":"tsens_tz_sensor8",
+            "Type":"CPU"
+        },
+        {
+            "Name":"tsens_tz_sensor10",
+            "Type":"GPU"
         }
     ]
 }
