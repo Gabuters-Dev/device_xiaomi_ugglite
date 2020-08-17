@@ -14,7 +14,7 @@
                 125.0
             ],
             "VrThreshold":"NAN",
-            "Multiplier":0.1
+            "Multiplier":0.001
 	    "Monitor":false
         },
         {
@@ -30,7 +30,7 @@
                 125.0
             ],
             "VrThreshold":"NAN",
-            "Multiplier":0.1
+            "Multiplier":0.001
 	    "Monitor":false
         },
         {
@@ -46,7 +46,7 @@
                 125.0
             ],
             "VrThreshold":"NAN",
-            "Multiplier":0.1
+            "Multiplier":0.001
 	    "Monitor":false
         },
         {
@@ -62,7 +62,7 @@
                 125.0
             ],
             "VrThreshold":"NAN",
-            "Multiplier":0.1
+            "Multiplier":0.001
 	    "Monitor":false
         },
         {
@@ -78,7 +78,7 @@
                 125.0
             ],
             "VrThreshold":"NAN",
-            "Multiplier":0.1
+            "Multiplier":0.001
 	    "Monitor":false
         },
         {
@@ -91,7 +91,7 @@
                 "NAN",
                 50.0,
                 "NAN",
-                60.0
+                65.0
             ],
             "VrThreshold":"NAN",
             "Multiplier":0.001
@@ -102,12 +102,11 @@
             "Type":"SKIN",
             "HotThreshold":[
                 "NAN",
-                47.0,
-                51.0,
-                54.0,
-                56.0,
-                58.0,
-                60.0
+                60.0,
+                65.0,
+                70.0,
+                75.0,
+                80.0
             ],
             "HotHysteresis":[
                 0.0,
@@ -146,3 +145,4 @@
         }
     ]
 }
+
