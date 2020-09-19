@@ -110,13 +110,15 @@ product/framework/dpmapi.jar|4696df9793ad676b305d53b5d7ce65ecf74771ad
 product/lib64/com.qualcomm.qti.dpm.api@1.0.so|a70cfc1be3e06cde6318d6969e114429fe1950bb
 product/lib64/libdpmctmgr.so|41a335924dedbed185edb21c568bbf13d8ca3708
 product/lib64/libdpmfdmgr.so|0cab07c31341e765fe71d04186393ad9935a3f20
-product/lib64/libdpmframework.so|177c82dc190fc7bcf152ee16f1426c6a8df49a61
 product/lib64/libdpmtcm.so|04be04dbf114d35c43e1454f30196dad1b6f6e04
 -product/priv-app/dpmserviceapp/dpmserviceapp.apk|5b1535cb4201f56d6027f8a41cf159d45ca4941b
 vendor/bin/dpmQmiMgr|c5c9ba878dac15a426fb2f0bee6d17537bb7c53d
 vendor/etc/init/dpmQmiMgr.rc|67569302d3a8828a9118c835e5b69c51b0c8ac68
 vendor/lib64/com.qualcomm.qti.dpm.api@1.0.so|a70cfc1be3e06cde6318d6969e114429fe1950bb
 vendor/lib64/libdpmqmihal.so|25d74c0e867f023b71a7c599ab6d213c7de2725d
+
+# DPM - from oneplus8 - qssi-user-11-RP1A.201005.001-2009051300-release-keys
+system_ext/lib64/libdpmframework.so
 
 # DRM and SEE - from X00RD - QKQ1.191002.002 17.07.2003.405-20200330
 vendor/bin/qseecomd|03786ba1664aa7a6aca09b78139380c61d365e25
