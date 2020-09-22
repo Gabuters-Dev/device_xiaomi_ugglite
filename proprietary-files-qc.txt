@@ -99,23 +99,23 @@ vendor/lib64/vendor.qti.hardware.data.qmi@1.0.so|c77ee2c19ea3f835ec8be73cef22b33
 vendor/lib64/vendor.qti.ims.rcsconfig@1.0.so|8195f1943c8529be2f82de0d518f3430f5a8eaa8
 vendor/lib64/vendor.qti.latency@2.0.so|1005cf377cbce75336c7ce3a2e5aca087d403356
 
-# DPM - from X00RD - QKQ1.191002.002 17.07.2003.405-20200330
-product/bin/dpmd|cac8f3eadeeec202f56d5b5f7a8c75e82e376d9f
-product/etc/dpm/dpm.conf|95e27da8c989e96c6faea6f0697bce11955b62a5
-product/etc/init/dpmd.rc|7f95195a89fddce06b93006a737701270e91f669
-product/etc/permissions/com.qti.dpmframework.xml|4613f8b8629d0b823e6aaab45d399ac30da06c09
-product/etc/permissions/dpmapi.xml|0991b3069308620cfcad53873e9f09af181b981d
-product/framework/com.qti.dpmframework.jar|e39a7e06af2d1e95a3724c19c36b8716277f53a1
-product/framework/dpmapi.jar|4696df9793ad676b305d53b5d7ce65ecf74771ad
-product/lib64/com.qualcomm.qti.dpm.api@1.0.so|a70cfc1be3e06cde6318d6969e114429fe1950bb
-product/lib64/libdpmctmgr.so|41a335924dedbed185edb21c568bbf13d8ca3708
-product/lib64/libdpmfdmgr.so|0cab07c31341e765fe71d04186393ad9935a3f20
-product/lib64/libdpmtcm.so|04be04dbf114d35c43e1454f30196dad1b6f6e04
--product/priv-app/dpmserviceapp/dpmserviceapp.apk|5b1535cb4201f56d6027f8a41cf159d45ca4941b
-vendor/bin/dpmQmiMgr|c5c9ba878dac15a426fb2f0bee6d17537bb7c53d
-vendor/etc/init/dpmQmiMgr.rc|67569302d3a8828a9118c835e5b69c51b0c8ac68
-vendor/lib64/com.qualcomm.qti.dpm.api@1.0.so|a70cfc1be3e06cde6318d6969e114429fe1950bb
-vendor/lib64/libdpmqmihal.so|25d74c0e867f023b71a7c599ab6d213c7de2725d
+# DPM - from LA.UM.8.6.2.r1-08400-89xx.0
+product/bin/dpmd|4ea13f5cd90033bd468b49d4ab6be7ef13a137f2
+product/etc/dpm/dpm.conf|016bb5bc822bd745da9ea73e54452a833902219c
+product/etc/init/dpmd.rc|2fc712c271384219a0910fe9fb55590068f7dcf8
+product/etc/permissions/com.qti.dpmframework.xml|8ce91c28cf535623817a774d61f6f271895dfe00
+product/etc/permissions/dpmapi.xml|ff8908caa578ffb9a4398b375d5813c79cdd558d
+product/framework/com.qti.dpmframework.jar|8a9fd7f2e4cf0d148f01765b1ee013a103dbb0e9
+product/framework/dpmapi.jar|0641f0317fde3bb22ba3b4f374128c6803a403b4
+product/lib64/com.qualcomm.qti.dpm.api@1.0.so|e4d7c0e77374e187c6b6a840e11b52713db7ce34
+product/lib64/libdpmctmgr.so|ecff0d53bc3fe869be243b305602b2962172efe9
+product/lib64/libdpmfdmgr.so|506948e1914b5eea5ff564a71faf7f50d81df343
+product/lib64/libdpmtcm.so|3782ca5ae5c26d8033cf527f2bd2c6f14893ebe0
+-product/priv-app/dpmserviceapp/dpmserviceapp.apk|21d90b9c22fd7d3ee40a2c8c48a54664369e5a4e
+vendor/bin/dpmQmiMgr|25ec1ab22beec332f2cc8c44c35bcab10adb92e6
+vendor/etc/init/dpmQmiMgr.rc|45e2ff35c95d24acf86b529963c46ebfed7bf7c4
+vendor/lib64/com.qualcomm.qti.dpm.api@1.0.so|888c7b8eb408de74f7429a5c13fe5fb2463e8b6a
+vendor/lib64/libdpmqmihal.so|9ef1672b2cbf3421c28c7badd2a9893b93918196
 
 # DPM - from oneplus8 - qssi-user-11-RP1A.201005.001-2009051300-release-keys
 system_ext/lib64/libdpmframework.so
