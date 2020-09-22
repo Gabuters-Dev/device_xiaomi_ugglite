@@ -1,27 +1,27 @@
-# ADSP - from X00RD - QKQ1.191002.002 17.07.2003.405-20200330
-vendor/bin/adsprpcd|a5e878691577485c9f7ee33dfe02384a13f0a265
-vendor/lib/libadsprpc.so|c015a2b2b0c5255140a9c437a295c79b4a17e3fb
-vendor/lib/libfastcvadsp_stub.so|996345605e1d631151a6b4e9cd9f65b2c7e82dac
-vendor/lib/libfastcvopt.so|1f187a924fe8c925cd03e18941f7895a09cc8f6f
-vendor/lib64/libadsp_default_listener.so|d7436ae6255671b4c3af533b5c89d91d75d5069e
-vendor/lib64/libadsprpc.so|4a6477929f3d25f9ee8fb97ae06115f035626249
+# ADSP - from LA.UM.8.6.2.r1-08400-89xx.0
+vendor/bin/adsprpcd|5b803e679ddbce4e59c2a67433ffefa6396d61f3
+vendor/lib/libadsprpc.so|ed3486181652adc974e8270a30b860bfdb70dcc2
+vendor/lib/libfastcvadsp_stub.so|9f82a7d713f92772e9b47570d50ba08c3c051991
+vendor/lib/libfastcvopt.so|d1416581cb3dcaedfbe37e55139dc441f5690921
+vendor/lib64/libadsp_default_listener.so|2411edf852600158588e40858b4183566733438e
+vendor/lib64/libadsprpc.so|a1cd4ba7b4a447f4634f5eb9435e7481d06a092f
 
-# Audio - from X00RD - QKQ1.191002.002 17.07.2003.405-20200330
-vendor/lib/libacdb-fts.so|87582f098caf4b23cfb03d500c48ab02046050d6
-vendor/lib/libacdbloader.so|bbc768463a89cc8019c81468d9e12bb4f8461862
-vendor/lib/libacdbrtac.so|d718335caad72967700fb80bb37627775d3dd309
-vendor/lib/libadiertac.so|8a62665f9153958d21745161aff683433e433644
-vendor/lib/libadm.so|b373d5cb6e4c6e081f1d206f6d9538339f330fda
-vendor/lib/libaudcal.so|0759db3faa286695ecfdb8fa152bd972e31a61c5
-vendor/lib/soundfx/libasphere.so|4d0ccf1c282bb70619d20bf7d79021dc3815a579
-vendor/lib/soundfx/libqcbassboost.so|2dc741b13b1e44da0421379915da60e5c8e836b1
-vendor/lib/soundfx/libqcreverb.so|9eec24c5172bb346bbe4b7d6a4f8684569523626
-vendor/lib/soundfx/libqcvirt.so|df6e01472f959ad096ea2eaa6214b1ca93556d64
-vendor/lib64/libacdb-fts.so|1ff75ad498e5fddf5a9d8ff4533f5e3fd5978025
-vendor/lib64/libacdbloader.so|14de64f27bdaa4b6b8ff3a96b2757e49e3771797
-vendor/lib64/libacdbrtac.so|527a8acc89da4f744d84994c2fafa6719fb69892
-vendor/lib64/libadiertac.so|739ae3ce673fc60d373f7646f393b9633f50f1c1
-vendor/lib64/libaudcal.so|9d1535c21d2327904ee63ed945e2b07d4ec0c7dd
+# Audio - from LA.UM.8.6.2.r1-08400-89xx.0
+vendor/lib/libacdb-fts.so|1f25781775183447ccee4933cda27dc979216098
+vendor/lib/libacdbloader.so|0475014588725b3f83d8cd3e2c93297ffbeb690b
+vendor/lib/libacdbrtac.so|18f7f0a6d881f45fb2c750510e6397e170aec78e
+vendor/lib/libadiertac.so|8407c8050bb3910444a6ec98c1c7b9f0a61dc9d4
+vendor/lib/libadm.so|ec1b296b0600c85e4dccd3fa3d3be0b8d4e19640
+vendor/lib/libaudcal.so|8ab3a31ff2b675b1b948c916e5a24c8660b8d4ec
+vendor/lib/soundfx/libasphere.so|79433e8819cc43c1b48f192aebc4e9a6fd58e011
+vendor/lib/soundfx/libqcbassboost.so|0ee81137ccb8b0d51849f92e94d763b7b10a8451
+vendor/lib/soundfx/libqcreverb.so|71840ea5e89fcac1d0dc1692b9dec219882bad32
+vendor/lib/soundfx/libqcvirt.so|961c5284bf027e46cb2c9cc14e2899804ca712d4
+vendor/lib64/libacdb-fts.so|ef103a2d857204f3477fc643644c07e2c1f8eb11
+vendor/lib64/libacdbloader.so|447dc9eafa0d840efaee05139318dea2da9e6e7b
+vendor/lib64/libacdbrtac.so|0dcadc05005216a3b1f16ad00054eb294c5f3650
+vendor/lib64/libadiertac.so|0c4c643cb7071251faec47006e2daace93af3117
+vendor/lib64/libaudcal.so|41a39ae956b77a24e454dd1ecf7325d049a38f42
 
 # Bluetooth - from X00RD - QKQ1.191002.002 17.07.2003.405-20200330
 vendor/bin/hw/android.hardware.bluetooth@1.0-service-qti|365c3de57a8a655da6b0882bf5411558025883e1
