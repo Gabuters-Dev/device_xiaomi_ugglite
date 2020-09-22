@@ -24,19 +24,19 @@ vendor/lib64/libadiertac.so|739ae3ce673fc60d373f7646f393b9633f50f1c1
 vendor/lib64/libaudcal.so|9d1535c21d2327904ee63ed945e2b07d4ec0c7dd
 
 # Bluetooth - from X00RD - QKQ1.191002.002 17.07.2003.405-20200330
-vendor/bin/hw/android.hardware.bluetooth@1.0-service-qti|365c3de57a8a655da6b0882bf5411558025883e1
+vendor/bin/hw/android.hardware.bluetooth@1.0-service-qti|8429b451d671b1b5d55e171bf824952f4f67c381
 vendor/etc/init/android.hardware.bluetooth@1.0-service-qti.rc|a979981c55f3dcaf6cf2212e71b901ca4d58b959
-vendor/lib64/hw/android.hardware.bluetooth@1.0-impl-qti.so|3ac2829b9062e6d81a56d3c43a70d268b49166a4
-vendor/lib64/hw/vendor.qti.hardware.bluetooth_sar@1.0-impl.so|4e188cd7cc009ced6af7901f357005623dd0875a
-vendor/lib64/hw/vendor.qti.hardware.btconfigstore@1.0-impl.so|df20addad1f9c1c8b342aeee1ff9a5fbc5cf8bb8
-vendor/lib64/libbt-hidlclient.so|69414712e85c8fabf9be9c697f0eaba470ab70eb
-vendor/lib64/libbtnv.so|f5b41bac778fb0b60725686968043c6caf67079d
-vendor/lib64/vendor.qti.hardware.bluetooth_sar@1.0.so|0a7c45e0218295bd204fe9ac5e9cb773d0e78870
-vendor/lib64/vendor.qti.hardware.btconfigstore@1.0.so|9cb28854dccc80bf96b5f8ef4940b34f8d8ee76c
+vendor/lib64/hw/android.hardware.bluetooth@1.0-impl-qti.so|efdee835a23e6317bfae50109659c02a04e016be
+vendor/lib64/hw/vendor.qti.hardware.bluetooth_sar@1.0-impl.so|ebdfcc7064fc144acf6cba300486c6394af3d73b
+vendor/lib64/hw/vendor.qti.hardware.btconfigstore@1.0-impl.so|5e06b7b33d084975d6326875268cb237ad6d8559
+vendor/lib64/libbt-hidlclient.so|0a0d0ac4e2f4e2e80f4ec488b53c18c96ff08dc6
+vendor/lib64/libbtnv.so|7f1753424a5d7c51d52bd9f7ad87542abd04a1f6
+vendor/lib64/vendor.qti.hardware.bluetooth_sar@1.0.so|d11a6abbaddbfee605c57a1a235c1da3011ee068
+vendor/lib64/vendor.qti.hardware.btconfigstore@1.0.so|22e4ecfff33c62adae5f1a0e399d3affb8f31c38
 
 # Bluetooth (shared dependencies) - from X00RD - QKQ1.191002.002 17.07.2003.405-20200330
-vendor/lib64/com.qualcomm.qti.ant@1.0.so|d374b4deb0df088dfc6151c37385a9b125bf3427
-vendor/lib64/vendor.qti.hardware.fm@1.0.so|c190ec6ecb995b556c30a214a8a7cf4894e72e5f
+vendor/lib64/com.qualcomm.qti.ant@1.0.so|9dc1bc2f1d726d71af31cc8c955aba122bbcdb1e
+vendor/lib64/vendor.qti.hardware.fm@1.0.so|9eb88f44f2231ca4f39bee678e3f71de8ef6ebb4
 
 # CNE - from X00RD - QKQ1.191002.002 17.07.2003.405-20200330
 etc/cne/Nexus/ATT/ATT_profiles.xml|33e568627fd3f94dc45bca1c01ad10e6d8fb5b52
@@ -309,30 +309,22 @@ vendor/lib/libOmxSwVencMpeg4.so|024bde5984f312b398d0ae172df7d8fb2db279bc
 vendor/bin/hw/vendor.qti.hardware.perf@2.0-service|ed731317514e1992ac919a49a1f98e14e7a60eff
 vendor/bin/msm_irqbalance|b5e55b4b0934b65b7dd5d2201f9a70f6f77a4e7c
 vendor/etc/init/vendor.qti.hardware.perf@2.0-service.rc|cc8658db5e19f8e5e575fb986e7d38147e675f8d
-vendor/lib/libperfconfig.so|fa79f7bb7f63a91b276731dd20e091e8a1b24f94
-vendor/lib/libperfgluelayer.so|bfaeb9b02983d0e02fd4ffdb7ce24fe15d518f55
-vendor/lib/libqti-perfd-client.so|b68f2c41ae8dd483569d78551829a08efb824cb5
-vendor/lib/libqti-perfd.so|89de9e48fda4f2275f17858887cc36d9e02cbc30
-vendor/lib/libqti-util.so|7f1b080e1d5c2e03261b80699232b3153146d215
-vendor/lib/vendor.qti.hardware.perf@1.0.so|8f25bfc201a8b37f406716e63f73d21e7ce0ec3a
-vendor/lib/vendor.qti.hardware.perf@2.0.so|6578499c4538b894821a27d7c7722c31439b98f6
-vendor/lib64/libperfconfig.so|8b2f05c0905b4111ae913633c904045ae0183619
-vendor/lib64/libperfgluelayer.so|4c95e08abc1cef5b39db06579d8f9faceb8f23d4
-vendor/lib64/libqti-perfd-client.so|0c2b82b5e5df6e0efb03ace4a259eb63487dd2b6
-vendor/lib64/libqti-perfd.so|7a6c75d2ec8ba7ed6bf17ef048c3c79a1a2daf53
-vendor/lib64/libqti-util.so|45a80be449435d277f09cc59e4a315fa86072c41
-vendor/lib64/vendor.qti.hardware.perf@1.0.so|c2488dcb941e33a910f2096b0953a24e0b4071a3
-vendor/lib64/vendor.qti.hardware.perf@2.0.so|b05e762bf5c7e86b0d6c1be4c8ae91e3f706dca7
+vendor/lib/libperfconfig.so|a940ff08c5207ca4ba7e3c9f97c51b98da8bb0d0
+vendor/lib/libperfgluelayer.so|3c58ba816cf4480357b1ed934d2b44f17d00449f
+vendor/lib/libqti-perfd-client.so|eb81a99bab35f29b7977bde878ea2a29e2abe18c
+vendor/lib/libqti-perfd.so|bc6f03e63c9172c256c4b87ffd045667168adb1c
+vendor/lib/libqti-util.so|da7cfbe08e99dfa77fb29f06878b5d676af40d09
+vendor/lib/vendor.qti.hardware.perf@1.0.so|14433f3baf7e760208f3e6ebbcb5583c5cfbf91c
+vendor/lib/vendor.qti.hardware.perf@2.0.so|67fbeed3fce2a6521f9c1d39b6cab1cd1550bd2a
+vendor/lib64/libperfconfig.so|c2929d897e116a0f775213e5ddfb785b313d8fd5
+vendor/lib64/libperfgluelayer.so|ba4f771f239303a96b118cacdb38f6ce985b0e9b
+vendor/lib64/libqti-perfd-client.so|cfdfe3d443085feae4cf4af398d711722b904388
+vendor/lib64/libqti-perfd.so|7a5724fcb4a5a7a74d58e2641c051934b038905d
+vendor/lib64/libqti-util.so|4911109f327c4bf9d1d34acc14082f78e69b4ccb
+vendor/lib64/vendor.qti.hardware.perf@1.0.so|125a5c14b4e768ef7ce1d89abee9b2421f17b7ba
+vendor/lib64/vendor.qti.hardware.perf@2.0.so|d4f082dcf0fedec3376144f91bc163c3c863ebd4
 
 # Perf-IOP - from LA.UM.8.6.2.r1-06600-89xx.0
-vendor/bin/hw/vendor.qti.hardware.iop@2.0-service|e3257b0a7fb944c471eb98623427630b6423fd24
-vendor/etc/init/vendor.qti.hardware.iop@2.0-service.rc|fd11367b2585702190ef2577ce2ce6fc68f3a2f8
-vendor/lib/hw/vendor.qti.hardware.iop@2.0-impl.so|75bd8cda17be32ee1b9f9cbea52cc24340bb92a4
-vendor/lib/libqti-iopd-client.so|30c7d57636921ddcec6df17fcb378a4a04eefe42
-vendor/lib/vendor.qti.hardware.iop@2.0.so|25cfe22f829d1b5288c574a852acc20478a91f74
-vendor/lib64/hw/vendor.qti.hardware.iop@2.0-impl.so|fd2bcbc1f9c46fea6e8af477a909a35b38e8cfa0
-vendor/lib64/libqti-iopd-client.so|fc9878267908f9843882891f902c4d37fee760dd
-vendor/lib64/vendor.qti.hardware.iop@2.0.so|7fdc8d9219a6d7a335fc91edb4837bccbac9fc49
 vendor/lib/libperfconfig.so|a940ff08c5207ca4ba7e3c9f97c51b98da8bb0d0
 vendor/lib/libperfgluelayer.so|3c58ba816cf4480357b1ed934d2b44f17d00449f
 vendor/lib/libqti-perfd-client.so|eb81a99bab35f29b7977bde878ea2a29e2abe18c
@@ -460,9 +452,9 @@ vendor/lib64/libsensor_user_cal.so|aea178debd6562e4f9e352aede494429c68ffcec
 vendor/lib64/sensors.ssc.so|9affbc5130223a63c7c8ee33a1b7408d739e1466
 
 # Thermal - from X00RD - QKQ1.191002.002 17.07.2003.405-20200330
-vendor/bin/thermal-engine|1adec8c5de1a095ed790879e5aabe1e249c816e3
-vendor/lib/libthermalclient.so|5366dedac700727f05ed1729bf00c855d0777de4
-vendor/lib64/libthermalclient.so|fead3fb780b175ef478c7ab120639dea5b37a802
+vendor/bin/thermal-engine|633b9cff05ba176a18101bdfc03ecacc98e1e0f0
+vendor/lib/libthermalclient.so|8837ba9f8f43d4cfbec00d8055fef4c9a7434931
+vendor/lib64/libthermalclient.so|148421212c4b2d3bcb37cb08f9542d3286f008c1
 vendor/lib64/libthermalioctl.so|dbb89b6990fed7373cbfcfeac9c90a5dd2bc2bdd
 
 # Time services - from X00RD - QKQ1.191002.002 17.07.2003.405-20200330
